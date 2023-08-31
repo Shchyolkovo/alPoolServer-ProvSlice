@@ -14,4 +14,7 @@ db = [
 
 [dependencies]
 #snarkvm = { path = "../../src/snarkVM" }
-snarkvm = { git = "https://github.com/AleoNet/snarkVM.git", rev = "be171ce", features = ["tes
+snarkvm = { git = "https://github.com/AleoNet/snarkVM.git", rev = "be171ce", features = ["test"] }
+snarkvm-algorithms = { git = "https://github.com/AleoNet/snarkVM.git", rev = "be171ce" }
+snarkvm-curves = { git = "https://github.com/AleoNet/snarkVM.git", rev = "be171ce" }
+snarkvm-utilities = { git = "https://github.com/AleoNet/snarkVM.git", rev = "be171ce
