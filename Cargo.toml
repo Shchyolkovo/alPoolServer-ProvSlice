@@ -23,4 +23,13 @@ snarkvm-ledger-puzzle-epoch = { git = "https://github.com/AleoNet/snarkVM.git", 
 #snarkvm = "0.9.13"
 #snarkvm-algorithms = "0.9.13"
 #snarkvm-curves = "0.9.13"
-#snarkvm-utilities = "0.9.
+#snarkvm-utilities = "0.9.13"
+snarkos-account = { git = "https://github.com/AleoNet/snarkOS.git", branch = "mainnet" }
+snarkos-node-router-messages = { git = "https://github.com/AleoNet/snarkOS.git", branch = "mainnet" }
+tracing = "0.1.40"
+tracing-log = "0.2.0"
+futures = "0.3.30"
+futures-util = "0.3.30"
+rand = "0.8.5"
+tokio-util = "0.7.11"
+tokio-stre
