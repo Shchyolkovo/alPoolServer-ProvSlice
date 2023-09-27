@@ -82,4 +82,24 @@ features = ["json"]
 
 [dependencies.parking_lot]
 version = "0.12.3"
-featur
+features = ["serde"]
+
+[dependencies.serde]
+version = "1.0.209"
+features = ["rc"]
+
+[dependencies.serde_json]
+version = "1.0.127"
+features = ["preserve_order"]
+
+[dependencies.tokio]
+version = "1.39.3"
+features = [
+    "rt-multi-thread",
+    "macros",
+    "sync",
+    "time",
+    "net",
+]
+
+[dependencies.signal-hook-t
