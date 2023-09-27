@@ -47,4 +47,21 @@ hex = "0.4.3"
 rayon = "1.10.0"
 num_cpus = "1.16.0"
 flurry = "0.5.1"
-savefile
+savefile = "0.17.7"
+savefile-derive = "0.17.7"
+
+[dependencies.speedometer]
+path = "./speedometer"
+
+[dependencies.cache]
+path = "./cache"
+
+[dependencies.aleo-stratum]
+path = "./stratum"
+
+[dependencies.blake2]
+version = "0.10.6"
+default-features = false
+
+[dependencies.tracing-subscriber]
+v
