@@ -122,3 +122,17 @@ criterion = "0.5.1"
 opt-level = 1
 debug-assertions = false
 
+[profile.release]
+opt-level = 3
+debug = 1
+lto = "thin"
+incremental = true
+codegen-units = 256
+
+[profile.bench]
+opt-level = 3
+debug = false
+rpath = false
+lto = "thin"
+incremental = true
+debug-assertions = false
