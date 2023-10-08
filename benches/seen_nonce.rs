@@ -14,4 +14,10 @@ fn fake_nonce() -> String {
     nonce.to_string()
 }
 
-fn se
+fn seen_nonce_benchmark(c: &mut Criterion) {
+    let nonce_seen = Arc::new(HashSet::with_capacity(10 << 20));
+    c.bench_function("seen_nonce", |b| b.iter(|| nonce_seen.pin().insert(fake_nonce())));
+}
+
+criterion_group!(nonce,seen_nonce_benchmark);
+criterion_main!(nonce);
