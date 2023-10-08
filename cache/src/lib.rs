@@ -11,4 +11,16 @@ pub struct Cache<K: Eq + Hash + Clone, V: Clone> {
 }
 
 impl<K: Eq + Hash + Clone, V: Clone> Cache<K, V> {
-    pub fn new(duration: Duration) -> Se
+    pub fn new(duration: Duration) -> Self {
+        Cache {
+            duration,
+            instants: Default::default(),
+            values: Default::default(),
+        }
+    }
+
+    pub fn get(&self, key: K) -> Option<V> {
+        let instant = self.instants.get(&key)?;
+        if instant.elapsed() > self.duration {
+            return None;
+        
