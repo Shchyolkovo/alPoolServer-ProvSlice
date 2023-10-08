@@ -23,4 +23,12 @@ impl<K: Eq + Hash + Clone, V: Clone> Cache<K, V> {
         let instant = self.instants.get(&key)?;
         if instant.elapsed() > self.duration {
             return None;
-        
+        }
+        self.values.get(&key).cloned()
+    }
+
+    pub fn set(&mut self, key: K, value: V) {
+        self.values.insert(key.clone(), value);
+        self.instants.insert(key, Instant::now());
+    }
+}
