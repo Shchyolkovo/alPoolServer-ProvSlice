@@ -107,3 +107,240 @@ CREATE SEQUENCE pool.balance_id_seq
 --
 -- Name: balance_id_seq; Type: SEQUENCE OWNED BY; Schema: pool; Owner: -
 --
+
+ALTER SEQUENCE pool.balance_id_seq OWNED BY pool.balance.id;
+
+
+--
+-- Name: solution; Type: TABLE; Schema: pool; Owner: -
+--
+
+CREATE TABLE pool.solution (
+    id integer NOT NULL,
+    height bigint,
+    reward bigint,
+    "timestamp" bigint DEFAULT EXTRACT(epoch FROM now()) NOT NULL,
+    paid boolean DEFAULT false NOT NULL,
+    valid boolean DEFAULT false NOT NULL,
+    solution_id text NOT NULL,
+    checked integer DEFAULT 0 NOT NULL
+);
+
+
+--
+-- Name: block_id_seq; Type: SEQUENCE; Schema: pool; Owner: -
+--
+
+CREATE SEQUENCE pool.block_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: block_id_seq; Type: SEQUENCE OWNED BY; Schema: pool; Owner: -
+--
+
+ALTER SEQUENCE pool.block_id_seq OWNED BY pool.solution.id;
+
+
+--
+-- Name: payout; Type: TABLE; Schema: pool; Owner: -
+--
+
+CREATE TABLE pool.payout (
+    id integer NOT NULL,
+    solution_id integer NOT NULL,
+    address text NOT NULL,
+    amount bigint NOT NULL,
+    "timestamp" integer DEFAULT EXTRACT(epoch FROM now())
+);
+
+
+--
+-- Name: payout_id_seq; Type: SEQUENCE; Schema: pool; Owner: -
+--
+
+CREATE SEQUENCE pool.payout_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: payout_id_seq; Type: SEQUENCE OWNED BY; Schema: pool; Owner: -
+--
+
+ALTER SEQUENCE pool.payout_id_seq OWNED BY pool.payout.id;
+
+
+--
+-- Name: share; Type: TABLE; Schema: pool; Owner: -
+--
+
+CREATE TABLE pool.share (
+    id integer NOT NULL,
+    solution_id integer NOT NULL,
+    address text NOT NULL,
+    share bigint NOT NULL
+);
+
+
+--
+-- Name: share_id_seq; Type: SEQUENCE; Schema: pool; Owner: -
+--
+
+CREATE SEQUENCE pool.share_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: share_id_seq; Type: SEQUENCE OWNED BY; Schema: pool; Owner: -
+--
+
+ALTER SEQUENCE pool.share_id_seq OWNED BY pool.share.id;
+
+
+--
+-- Name: stats; Type: TABLE; Schema: pool; Owner: -
+--
+
+CREATE TABLE pool.stats (
+    key text NOT NULL,
+    value bigint
+);
+
+
+--
+-- Name: balance id; Type: DEFAULT; Schema: pool; Owner: -
+--
+
+ALTER TABLE ONLY pool.balance ALTER COLUMN id SET DEFAULT nextval('pool.balance_id_seq'::regclass);
+
+
+--
+-- Name: payout id; Type: DEFAULT; Schema: pool; Owner: -
+--
+
+ALTER TABLE ONLY pool.payout ALTER COLUMN id SET DEFAULT nextval('pool.payout_id_seq'::regclass);
+
+
+--
+-- Name: share id; Type: DEFAULT; Schema: pool; Owner: -
+--
+
+ALTER TABLE ONLY pool.share ALTER COLUMN id SET DEFAULT nextval('pool.share_id_seq'::regclass);
+
+
+--
+-- Name: solution id; Type: DEFAULT; Schema: pool; Owner: -
+--
+
+ALTER TABLE ONLY pool.solution ALTER COLUMN id SET DEFAULT nextval('pool.block_id_seq'::regclass);
+
+
+--
+-- Name: balance balance_pk; Type: CONSTRAINT; Schema: pool; Owner: -
+--
+
+ALTER TABLE ONLY pool.balance
+    ADD CONSTRAINT balance_pk PRIMARY KEY (id);
+
+
+--
+-- Name: payout payout_pk; Type: CONSTRAINT; Schema: pool; Owner: -
+--
+
+ALTER TABLE ONLY pool.payout
+    ADD CONSTRAINT payout_pk PRIMARY KEY (id);
+
+
+--
+-- Name: share share_pk; Type: CONSTRAINT; Schema: pool; Owner: -
+--
+
+ALTER TABLE ONLY pool.share
+    ADD CONSTRAINT share_pk PRIMARY KEY (id);
+
+
+--
+-- Name: solution solution_pk; Type: CONSTRAINT; Schema: pool; Owner: -
+--
+
+ALTER TABLE ONLY pool.solution
+    ADD CONSTRAINT solution_pk PRIMARY KEY (id);
+
+
+--
+-- Name: stats stats_pk; Type: CONSTRAINT; Schema: pool; Owner: -
+--
+
+ALTER TABLE ONLY pool.stats
+    ADD CONSTRAINT stats_pk PRIMARY KEY (key);
+
+
+--
+-- Name: balance_address_uindex; Type: INDEX; Schema: pool; Owner: -
+--
+
+CREATE UNIQUE INDEX balance_address_uindex ON pool.balance USING btree (address);
+
+
+--
+-- Name: payout_address_index; Type: INDEX; Schema: pool; Owner: -
+--
+
+CREATE INDEX payout_address_index ON pool.payout USING btree (address);
+
+
+--
+-- Name: solution_height_index; Type: INDEX; Schema: pool; Owner: -
+--
+
+CREATE INDEX solution_height_index ON pool.solution USING btree (height);
+
+
+--
+-- Name: solution_paid_index; Type: INDEX; Schema: pool; Owner: -
+--
+
+CREATE INDEX solution_paid_index ON pool.solution USING btree (paid);
+
+
+--
+-- Name: solution_valid_index; Type: INDEX; Schema: pool; Owner: -
+--
+
+CREATE INDEX solution_valid_index ON pool.solution USING btree (valid);
+
+
+--
+-- Name: payout payout_solution_id_fk; Type: FK CONSTRAINT; Schema: pool; Owner: -
+--
+
+ALTER TABLE ONLY pool.payout
+    ADD CONSTRAINT payout_solution_id_fk FOREIGN KEY (solution_id) REFERENCES pool.solution(id);
+
+
+--
+-- Name: share share_solution_id_fk; Type: FK CONSTRAINT; Schema: pool; Owner: -
+--
+
+ALTER TABLE ONLY pool.share
+    ADD CONSTRAINT share_solution_id_fk FOREIGN KEY (solution_id) REFERENCES pool.solution(id);
+
+
+--
+-- PostgreSQL database dump complete
+--
