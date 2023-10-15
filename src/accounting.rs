@@ -313,3 +313,23 @@ impl Accounting {
                     error!("Unable to check solution: {}", valid.unwrap_err());
                     sleep(PAY_INTERVAL).await;
                     continue 'forever;
+                }
+                let valid = valid.unwrap();
+                if valid {
+                    match self.database.pay_solution(id).await {
+                        Ok(_) => {
+                            info!("Paid solution {}", solution_id);
+                        }
+                        Err(e) => {
+                            error!("Unable to pay solution {}: {}", id, e);
+                            sleep(PAY_INTERVAL).await;
+                            continue 'forever;
+                        }
+                    }
+                }
+            }
+
+            sleep(PAY_INTERVAL).await;
+        }
+    }
+}
