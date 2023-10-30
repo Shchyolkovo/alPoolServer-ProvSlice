@@ -20,4 +20,18 @@ use tokio::{
 };
 use tokio_stream::StreamExt;
 use tokio_util::codec::Framed;
-use tracing::{error, info, trace, w
+use tracing::{error, info, trace, warn};
+
+use crate::{server::ServerMessage, N};
+
+pub struct Connection {
+    user_agent: String,
+    address: Option<Address<N>>,
+    version: Version,
+    last_received: Option<Instant>,
+}
+
+static PEER_HANDSHAKE_TIMEOUT: Duration = Duration::from_secs(10);
+static PEER_COMM_TIMEOUT: Duration = Duration::from_secs(180);
+
+static MIN_SUPPO
