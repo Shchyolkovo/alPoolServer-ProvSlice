@@ -44,4 +44,13 @@ impl Connection {
         server_sender: Sender<ServerMessage>,
         pool_address: Address<N>,
     ) {
-        ta
+        task::spawn(Connection::run(stream, peer_addr, server_sender, pool_address));
+    }
+
+    pub async fn run(
+        stream: TcpStream,
+        peer_addr: SocketAddr,
+        server_sender: Sender<ServerMessage>,
+        pool_address: Address<N>,
+    ) {
+        let mut framed = Framed::new(stream, StratumCo
