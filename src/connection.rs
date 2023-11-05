@@ -66,4 +66,9 @@ impl Connection {
 
         // Handshake
 
-        if let Ok((user_agent, version)) = Conn
+        if let Ok((user_agent, version)) = Connection::handshake(&mut framed, pool_address.to_string()).await {
+            conn.user_agent = user_agent;
+            conn.version = version;
+        } else {
+            if let Err(e) = server_sender.send(ServerMessage::ProverDisconnected(peer_addr)).await {
+                error!("Failed to send ProverDisconne
