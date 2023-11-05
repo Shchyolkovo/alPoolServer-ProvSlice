@@ -53,4 +53,17 @@ impl Connection {
         server_sender: Sender<ServerMessage>,
         pool_address: Address<N>,
     ) {
-        let mut framed = Framed::new(stream, StratumCo
+        let mut framed = Framed::new(stream, StratumCodec::default());
+
+        let (sender, mut receiver) = channel(1024);
+
+        let mut conn = Connection {
+            user_agent: "Unknown".to_string(),
+            address: None,
+            version: Version::new(0, 0, 0),
+            last_received: None,
+        };
+
+        // Handshake
+
+        if let Ok((user_agent, version)) = Conn
