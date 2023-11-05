@@ -71,4 +71,12 @@ impl Connection {
             conn.version = version;
         } else {
             if let Err(e) = server_sender.send(ServerMessage::ProverDisconnected(peer_addr)).await {
-                error!("Failed to send ProverDisconne
+                error!("Failed to send ProverDisconnected message to server: {}", e);
+            }
+            return;
+        }
+
+        if let Ok(address) = Connection::authorize(&mut framed).await {
+            conn.address = Some(address);
+            if let Err(e) = server_sender
+                .send(ServerMessage::Prov
