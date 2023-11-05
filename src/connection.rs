@@ -79,4 +79,14 @@ impl Connection {
         if let Ok(address) = Connection::authorize(&mut framed).await {
             conn.address = Some(address);
             if let Err(e) = server_sender
-                .send(ServerMessage::Prov
+                .send(ServerMessage::ProverAuthenticated(
+                    peer_addr,
+                    conn.address.unwrap(),
+                    sender,
+                ))
+                .await
+            {
+                error!("Failed to send ProverAuthenticated message to server: {}", e);
+            }
+        } else {
+            if let Err(e) = s
