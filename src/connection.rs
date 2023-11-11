@@ -89,4 +89,12 @@ impl Connection {
                 error!("Failed to send ProverAuthenticated message to server: {}", e);
             }
         } else {
-            if let Err(e) = s
+            if let Err(e) = server_sender.send(ServerMessage::ProverDisconnected(peer_addr)).await {
+                error!("Failed to send ProverDisconnected message to server: {}", e);
+            }
+            return;
+        }
+
+        conn.last_received = Some(Instant::now());
+
+        info!("Pe
