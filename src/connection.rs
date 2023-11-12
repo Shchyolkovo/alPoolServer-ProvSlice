@@ -104,4 +104,10 @@ impl Connection {
                 Some(msg) = receiver.recv() => {
                     if let Some(instant) = conn.last_received {
                         if instant.elapsed() > PEER_COMM_TIMEOUT {
-             
+                            warn!("Peer {:?} timed out", peer_addr);
+                            break;
+                        }
+                    }
+                    trace!("Sending message {} to peer {:?}", msg.name(), peer_addr);
+                    if let Err(e) = framed.send(msg).await {
+                      
