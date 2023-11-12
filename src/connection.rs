@@ -97,4 +97,11 @@ impl Connection {
 
         conn.last_received = Some(Instant::now());
 
-        info!("Pe
+        info!("Peer {:?} authenticated as {}", peer_addr, conn.address.unwrap());
+
+        loop {
+            tokio::select! {
+                Some(msg) = receiver.recv() => {
+                    if let Some(instant) = conn.last_received {
+                        if instant.elapsed() > PEER_COMM_TIMEOUT {
+             
