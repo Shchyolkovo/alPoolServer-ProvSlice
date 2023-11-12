@@ -115,4 +115,9 @@ impl Connection {
                 },
                 result = framed.next() => match result {
                     Some(Ok(msg)) => {
-                        trace!("Received message {} from peer {
+                        trace!("Received message {} from peer {:?}", msg.name(), peer_addr);
+                        conn.last_received = Some(Instant::now());
+                        match msg {
+                            StratumMessage::Submit(id, _worker_name, job_id, counter) => {
+                                let job_bytes = hex::decode(job_id.clone());
+                 
