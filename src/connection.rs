@@ -110,4 +110,9 @@ impl Connection {
                     }
                     trace!("Sending message {} to peer {:?}", msg.name(), peer_addr);
                     if let Err(e) = framed.send(msg).await {
-                      
+                        error!("Failed to send message to peer {:?}: {:?}", peer_addr, e);
+                    }
+                },
+                result = framed.next() => match result {
+                    Some(Ok(msg)) => {
+                        trace!("Received message {} from peer {
