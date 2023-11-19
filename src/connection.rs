@@ -120,4 +120,9 @@ impl Connection {
                         match msg {
                             StratumMessage::Submit(id, _worker_name, job_id, counter) => {
                                 let job_bytes = hex::decode(job_id.clone());
-                 
+                                if job_bytes.is_err() {
+                                    warn!("Failed to decode job_id {} from peer {:?}", job_id, peer_addr);
+                                    break;
+                                }
+                                if job_bytes.clone().unwrap().len() != 4 {
+                  
