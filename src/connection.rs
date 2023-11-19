@@ -125,4 +125,9 @@ impl Connection {
                                     break;
                                 }
                                 if job_bytes.clone().unwrap().len() != 4 {
-                  
+                                    warn!("Invalid job_id {} from peer {:?}", job_id, peer_addr);
+                                    break;
+                                }
+                                let epoch_number = match job_bytes {
+                                    Ok(job_bytes) => {
+                                        i
