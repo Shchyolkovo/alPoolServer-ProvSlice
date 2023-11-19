@@ -130,4 +130,8 @@ impl Connection {
                                 }
                                 let epoch_number = match job_bytes {
                                     Ok(job_bytes) => {
-                                        i
+                                        if job_bytes.len() != 4 {
+                                            warn!("Invalid job_id {} from peer {:?}", job_id, peer_addr);
+                                            break;
+                                        }
+                                        u32::from_le_bytes(job_bytes.try_into().unwra
