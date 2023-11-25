@@ -134,4 +134,11 @@ impl Connection {
                                             warn!("Invalid job_id {} from peer {:?}", job_id, peer_addr);
                                             break;
                                         }
-                                        u32::from_le_bytes(job_bytes.try_into().unwra
+                                        u32::from_le_bytes(job_bytes.try_into().unwrap())
+                                    },
+                                    Err(e) => {
+                                        warn!("Failed to decode job_id {} from peer {:?}: {:?}", job_id, peer_addr, e);
+                                        break;
+                                    }
+                                };
+               
