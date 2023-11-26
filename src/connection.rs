@@ -144,4 +144,12 @@ impl Connection {
                                 let counter = u64::from_str(counter.as_str()).unwrap();
                                 if let Err(e) = server_sender.send(ServerMessage::ProverSubmit(id, peer_addr, epoch_number, counter)).await {
                                     error!("Failed to send ProverSubmit message to server: {}", e);
-                       
+                                }
+                            }
+                            _ => {
+                                warn!("Received unexpected message from peer {:?}: {:?}", peer_addr, msg.name());
+                                break;
+                            }
+                        }
+                    }
+       
