@@ -152,4 +152,13 @@ impl Connection {
                             }
                         }
                     }
-       
+                    Some(Err(e)) => {
+                        warn!("Failed to read message from peer: {:?}", e);
+                        break;
+                    }
+                    None => {
+                        info!("Peer {:?} disconnected", peer_addr);
+                        break;
+                    }
+                },
+                _ = 
