@@ -177,4 +177,9 @@ impl Connection {
         pool_address: String,
     ) -> Result<(String, Version)> {
         let peer_addr = framed.get_ref().peer_addr()?;
-        match timeout(PEER_HAND
+        match timeout(PEER_HANDSHAKE_TIMEOUT, framed.next()).await {
+            Ok(Some(Ok(message))) => {
+                trace!("Received message {} from peer {:?}", message.name(), peer_addr);
+                match message {
+                    StratumMessage::Subscribe(id, user_agent, protocol_version, _) => {
+    
