@@ -182,4 +182,9 @@ impl Connection {
                 trace!("Received message {} from peer {:?}", message.name(), peer_addr);
                 match message {
                     StratumMessage::Subscribe(id, user_agent, protocol_version, _) => {
-    
+                        let split: Vec<&str> = protocol_version.split('/').collect();
+                        if split.len() != 2 {
+                            warn!(
+                                "Invalid protocol version {} from peer {:?}",
+                                protocol_version, peer_addr
+        
