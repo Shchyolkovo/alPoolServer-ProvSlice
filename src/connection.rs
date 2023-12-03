@@ -161,4 +161,10 @@ impl Connection {
                         break;
                     }
                 },
-                _ = 
+                _ = tokio::time::sleep(PEER_COMM_TIMEOUT) => {
+                    info!("Peer {:?} timed out", peer_addr);
+                    break;
+                },
+            }
+        }
+        if let Err(e) = server_sender.send(ServerMessage::ProverDisconnected(peer_addr)).awai
