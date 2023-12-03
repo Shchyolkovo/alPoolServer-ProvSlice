@@ -167,4 +167,14 @@ impl Connection {
                 },
             }
         }
-        if let Err(e) = server_sender.send(ServerMessage::ProverDisconnected(peer_addr)).awai
+        if let Err(e) = server_sender.send(ServerMessage::ProverDisconnected(peer_addr)).await {
+            error!("Failed to send ProverDisconnected message to server: {}", e);
+        }
+    }
+
+    pub async fn handshake(
+        framed: &mut Framed<TcpStream, StratumCodec>,
+        pool_address: String,
+    ) -> Result<(String, Version)> {
+        let peer_addr = framed.get_ref().peer_addr()?;
+        match timeout(PEER_HAND
