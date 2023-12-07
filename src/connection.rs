@@ -187,4 +187,9 @@ impl Connection {
                             warn!(
                                 "Invalid protocol version {} from peer {:?}",
                                 protocol_version, peer_addr
-        
+                            );
+                            return Err(anyhow!("Invalid protocol version"));
+                        }
+                        if split[0] != "AleoStratum" {
+                            warn!("Invalid protocol name {} from peer {:?}", split[0], peer_addr);
+                       
