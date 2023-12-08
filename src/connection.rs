@@ -192,4 +192,9 @@ impl Connection {
                         }
                         if split[0] != "AleoStratum" {
                             warn!("Invalid protocol name {} from peer {:?}", split[0], peer_addr);
-                       
+                            return Err(anyhow!("Invalid protocol name"));
+                        }
+                        let version = Version::parse(split[1]).map_err(|e| {
+                            warn!(
+                                "Invalid protocol version {} from peer {:?}: {:?}",
+                                split[1], p
