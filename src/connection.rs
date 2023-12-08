@@ -197,4 +197,10 @@ impl Connection {
                         let version = Version::parse(split[1]).map_err(|e| {
                             warn!(
                                 "Invalid protocol version {} from peer {:?}: {:?}",
-                                split[1], p
+                                split[1], peer_addr, e
+                            );
+                            e
+                        })?;
+                        if version < MIN_SUPPORTED_VERSION || version > MAX_SUPPORTED_VERSION {
+                            warn!("Unsupported protocol version {} from peer {:?}", version, peer_addr);
+                      
