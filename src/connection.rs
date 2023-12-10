@@ -203,4 +203,9 @@ impl Connection {
                         })?;
                         if version < MIN_SUPPORTED_VERSION || version > MAX_SUPPORTED_VERSION {
                             warn!("Unsupported protocol version {} from peer {:?}", version, peer_addr);
-                      
+                            return Err(anyhow!("Unsupported protocol version"));
+                        }
+                        let response_params: Vec<Box<dyn BoxedType>> = vec![
+                            Box::new(Option::<String>::None),
+                            Box::new(Option::<String>::None),
+     
