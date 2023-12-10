@@ -208,4 +208,10 @@ impl Connection {
                         let response_params: Vec<Box<dyn BoxedType>> = vec![
                             Box::new(Option::<String>::None),
                             Box::new(Option::<String>::None),
-     
+                            Box::new(Some(pool_address)),
+                        ];
+                        framed
+                            .send(StratumMessage::Response(
+                                id,
+                                Some(ResponseParams::Array(response_params)),
+             
