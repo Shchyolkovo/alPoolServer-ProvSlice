@@ -214,4 +214,11 @@ impl Connection {
                             .send(StratumMessage::Response(
                                 id,
                                 Some(ResponseParams::Array(response_params)),
-             
+                                None,
+                            ))
+                            .await?;
+                        Ok((user_agent, version))
+                    }
+                    _ => {
+                        warn!("Peer {:?} sent {} before handshake", peer_addr, message.name());
+                        Err(anyho
