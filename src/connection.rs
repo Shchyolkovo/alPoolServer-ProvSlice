@@ -221,4 +221,13 @@ impl Connection {
                     }
                     _ => {
                         warn!("Peer {:?} sent {} before handshake", peer_addr, message.name());
-                        Err(anyho
+                        Err(anyhow!("Unexpected message before handshake"))
+                    }
+                }
+            }
+            Ok(Some(Err(e))) => {
+                warn!("Error reading from peer {:?}: {}", peer_addr, e);
+                Err(anyhow!("Error reading from peer"))
+            }
+            Ok(None) => {
+                warn!("Peer {:
