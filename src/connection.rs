@@ -236,3 +236,12 @@ impl Connection {
             Err(e) => {
                 warn!("Peer {:?} timed out on handshake: {}", peer_addr, e);
                 Err(anyhow!("Peer timed out on handshake"))
+            }
+        }
+    }
+
+    pub async fn authorize(framed: &mut Framed<TcpStream, StratumCodec>) -> Result<Address<N>> {
+        let peer_addr = framed.get_ref().peer_addr()?;
+        match timeout(PEER_HANDSHAKE_TIMEOUT, framed.next()).await {
+            Ok(Some(Ok(message))) => {
+                trace!("Received message 
