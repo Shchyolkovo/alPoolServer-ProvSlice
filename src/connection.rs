@@ -244,4 +244,8 @@ impl Connection {
         let peer_addr = framed.get_ref().peer_addr()?;
         match timeout(PEER_HANDSHAKE_TIMEOUT, framed.next()).await {
             Ok(Some(Ok(message))) => {
-                trace!("Received message 
+                trace!("Received message {} from peer {:?}", message.name(), peer_addr);
+                match message {
+                    StratumMessage::Authorize(id, address, _) => {
+                        let address = Address::<N>::from_str(address.as_str()).map_err(|e| {
+                            warn!("Invalid address {} from pe
