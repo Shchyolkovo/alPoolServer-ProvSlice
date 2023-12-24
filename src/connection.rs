@@ -230,4 +230,9 @@ impl Connection {
                 Err(anyhow!("Error reading from peer"))
             }
             Ok(None) => {
-                warn!("Peer {:
+                warn!("Peer {:?} disconnected before authorization", peer_addr);
+                Err(anyhow!("Peer disconnected before authorization"))
+            }
+            Err(e) => {
+                warn!("Peer {:?} timed out on handshake: {}", peer_addr, e);
+                Err(anyhow!("Peer timed out on handshake"))
