@@ -248,4 +248,12 @@ impl Connection {
                 match message {
                     StratumMessage::Authorize(id, address, _) => {
                         let address = Address::<N>::from_str(address.as_str()).map_err(|e| {
-                            warn!("Invalid address {} from pe
+                            warn!("Invalid address {} from peer {:?}: {:?}", address, peer_addr, e);
+                            e
+                        })?;
+                        framed
+                            .send(StratumMessage::Response(id, Some(ResponseParams::Bool(true)), None))
+                            .await?;
+                        Ok(address)
+                    }
+     
