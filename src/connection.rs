@@ -256,4 +256,10 @@ impl Connection {
                             .await?;
                         Ok(address)
                     }
-     
+                    _ => {
+                        warn!("Peer {:?} sent {} before authorizing", peer_addr, message.name());
+                        Err(anyhow!("Unexpected message before authorization"))
+                    }
+                }
+            }
+            Ok(Some(Err(e))) 
