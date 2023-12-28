@@ -262,4 +262,10 @@ impl Connection {
                     }
                 }
             }
-            Ok(Some(Err(e))) 
+            Ok(Some(Err(e))) => {
+                warn!("Error reading from peer {:?}: {}", peer_addr, e);
+                Err(anyhow!("Error reading from peer"))
+            }
+            Ok(None) => {
+                warn!("Peer {:?} disconnected before authorization", peer_addr);
+                Err(anyhow!("Peer dis
