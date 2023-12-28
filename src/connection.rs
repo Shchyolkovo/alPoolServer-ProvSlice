@@ -268,4 +268,12 @@ impl Connection {
             }
             Ok(None) => {
                 warn!("Peer {:?} disconnected before authorization", peer_addr);
-                Err(anyhow!("Peer dis
+                Err(anyhow!("Peer disconnected before authorization"))
+            }
+            Err(e) => {
+                warn!("Peer {:?} timed out on authorize: {}", peer_addr, e);
+                Err(anyhow!("Peer timed out on authorize"))
+            }
+        }
+    }
+}
