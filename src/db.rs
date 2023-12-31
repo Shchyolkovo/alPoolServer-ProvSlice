@@ -29,4 +29,9 @@ impl DB {
         cfg.port = Some(
             env::var("DB_PORT")
                 .unwrap_or_else(|_| "5432".to_string())
-               
+                .parse::<u16>()
+                .expect("Invalid database port"),
+        );
+        cfg.dbname = Some(env::var("DB_DATABASE").expect("No database name defined"));
+        cfg.user = Some(env::var("DB_USER").expect("No database user defined"));
+        cfg.password = Some(env::var("DB_PASSWORD").expect("No databas
