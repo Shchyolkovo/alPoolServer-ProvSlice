@@ -34,4 +34,12 @@ impl DB {
         );
         cfg.dbname = Some(env::var("DB_DATABASE").expect("No database name defined"));
         cfg.user = Some(env::var("DB_USER").expect("No database user defined"));
-        cfg.password = Some(env::var("DB_PASSWORD").expect("No databas
+        cfg.password = Some(env::var("DB_PASSWORD").expect("No database password defined"));
+        let schema = env::var("DB_SCHEMA").unwrap_or_else(|_| {
+            warn!("Using schema public as default");
+            "public".to_string()
+        });
+        cfg.manager = Some(ManagerConfig {
+            recycling_method: RecyclingMethod::Verified,
+        });
+        //
