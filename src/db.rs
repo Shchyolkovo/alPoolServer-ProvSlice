@@ -42,4 +42,9 @@ impl DB {
         cfg.manager = Some(ManagerConfig {
             recycling_method: RecyclingMethod::Verified,
         });
-        //
+        // This is almost like directly using deadpool, but we really need the hooks
+        // The helper methods from deadpool_postgres helps as well
+        let pool = Pool::builder(Manager::from_config(
+            cfg.get_pg_config().expect("Invalid database config"),
+            NoTls,
+            cfg.get_manager_config(),
