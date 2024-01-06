@@ -48,3 +48,11 @@ impl DB {
             cfg.get_pg_config().expect("Invalid database config"),
             NoTls,
             cfg.get_manager_config(),
+        ))
+        .config(cfg.get_pool_config())
+        .post_create(Hook::async_fn(move |client: &mut ClientWrapper, _| {
+            let schema = schema.clone();
+            Box::pin(async move {
+                client
+                    .simple_query(&format!("set search_path = {}", schema))
+ 
