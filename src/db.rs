@@ -55,4 +55,15 @@ impl DB {
             Box::pin(async move {
                 client
                     .simple_query(&format!("set search_path = {}", schema))
- 
+                    .await
+                    .map_err(|e| HookError::Backend(e))?;
+                Ok(())
+            })
+        }))
+        .runtime(Runtime::Tokio1)
+        .build()
+        .expect("Failed to create database connection pool");
+        DB { connection_pool: pool }
+    }
+
+    pub async fn sa
