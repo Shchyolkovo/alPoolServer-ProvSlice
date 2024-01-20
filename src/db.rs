@@ -66,4 +66,19 @@ impl DB {
         DB { connection_pool: pool }
     }
 
-    pub async fn sa
+    pub async fn save_solution(&self, solution_id: SolutionID<N>, shares: HashMap<String, u64>) -> Result<()> {
+        let mut conn = self.connection_pool.get().await?;
+        let transaction = conn.transaction().await?;
+
+        let solution_id: i32 = transaction
+            .query_one(
+                "INSERT INTO solution (solution_id) VALUES ($1) RETURNING id",
+                &[&solution_id.to_string()],
+            )
+            .await?
+            .try_get("id")?;
+
+        let stmt = transaction
+            .prepare_cached("INSERT INTO share (solution_id, address, share) VALUES ($1, $2, $3)")
+            .await?;
+        for
