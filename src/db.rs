@@ -101,4 +101,10 @@ impl DB {
         let mut conn = self.connection_pool.get().await?;
         let transaction = conn.transaction().await?;
         let stmt = transaction
-            .prepar
+            .prepare_cached("UPDATE solution SET valid = $1, checked = checked + 1 WHERE solution_id = $2")
+            .await?;
+        transaction.query(&stmt, &[&valid, solution_id]).await?;
+        if valid {
+            transaction
+                .query(
+                    "UPDATE solution SET h
