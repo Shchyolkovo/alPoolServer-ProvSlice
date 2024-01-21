@@ -93,4 +93,12 @@ impl DB {
 
     pub async fn set_solution_valid(
         &self,
-        solutio
+        solution_id: &String,
+        valid: bool,
+        height: Option<u32>,
+        reward: Option<u64>,
+    ) -> Result<()> {
+        let mut conn = self.connection_pool.get().await?;
+        let transaction = conn.transaction().await?;
+        let stmt = transaction
+            .prepar
