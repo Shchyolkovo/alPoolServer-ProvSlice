@@ -81,4 +81,16 @@ impl DB {
         let stmt = transaction
             .prepare_cached("INSERT INTO share (solution_id, address, share) VALUES ($1, $2, $3)")
             .await?;
-        for
+        for (address, share) in shares {
+            transaction
+                .query(&stmt, &[&solution_id, &address, &(share as i64)])
+                .await?;
+        }
+
+        transaction.commit().await?;
+        Ok(())
+    }
+
+    pub async fn set_solution_valid(
+        &self,
+        solutio
