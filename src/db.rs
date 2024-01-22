@@ -107,4 +107,13 @@ impl DB {
         if valid {
             transaction
                 .query(
-                    "UPDATE solution SET h
+                    "UPDATE solution SET height = $1, reward = $2 WHERE solution_id = $3",
+                    &[&(height.unwrap() as i64), &(reward.unwrap() as i64), solution_id],
+                )
+                .await?;
+        }
+        transaction.commit().await?;
+        Ok(())
+    }
+
+    pub async fn get_should_pay_solutions(&self) -> Res
