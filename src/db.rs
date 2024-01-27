@@ -122,4 +122,12 @@ impl DB {
             .prepare_cached(
                 "SELECT * FROM solution WHERE paid = false AND ((valid = false AND checked < 3) OR valid = true) \
                  ORDER BY id",
-   
+            )
+            .await?;
+        let rows = conn.query(&stmt, &[]).await?;
+        Ok(rows
+            .into_iter()
+            .map(|row| {
+                let id: i32 = row.get("id");
+                let solution_id: String = row.get("solution_id");
+                (id, solution
