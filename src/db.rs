@@ -116,4 +116,10 @@ impl DB {
         Ok(())
     }
 
-    pub async fn get_should_pay_solutions(&self) -> Res
+    pub async fn get_should_pay_solutions(&self) -> Result<Vec<(i32, String)>> {
+        let conn = self.connection_pool.get().await?;
+        let stmt = conn
+            .prepare_cached(
+                "SELECT * FROM solution WHERE paid = false AND ((valid = false AND checked < 3) OR valid = true) \
+                 ORDER BY id",
+   
