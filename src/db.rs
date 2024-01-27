@@ -130,4 +130,12 @@ impl DB {
             .map(|row| {
                 let id: i32 = row.get("id");
                 let solution_id: String = row.get("solution_id");
-                (id, solution
+                (id, solution_id)
+            })
+            .collect())
+    }
+
+    // pub async fn set_checked_blocks(&self, latest_height: u32) -> Result<()> {
+    //     let conn = self.connection_pool.get().await?;
+    //     let stmt = conn
+    //         .prepare_cached("UPDATE block SET checked = true WHERE height <
