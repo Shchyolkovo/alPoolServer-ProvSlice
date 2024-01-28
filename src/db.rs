@@ -138,4 +138,12 @@ impl DB {
     // pub async fn set_checked_blocks(&self, latest_height: u32) -> Result<()> {
     //     let conn = self.connection_pool.get().await?;
     //     let stmt = conn
-    //         .prepare_cached("UPDATE block SET checked = true WHERE height <
+    //         .prepare_cached("UPDATE block SET checked = true WHERE height <= $1 AND checked = false")
+    //         .await?;
+    //     conn.query(&stmt, &[&((latest_height as i64).saturating_sub(4100))])
+    //         .await?;
+    //     Ok(())
+    // }
+
+    pub async fn pay_solution(&self, solution_id: i32) -> Result<()> {
+        let conn = self.connection_pool.get().awa
