@@ -153,3 +153,27 @@ async fn handle_signals(mut signals: Signals, accounting: Arc<Accounting>, serve
         info!("Received signal: {:?}", signal);
         let accounting_sender = accounting.sender();
         match signal {
+            SIGABRT => {
+                info!("Trying to salvage states before aborting...");
+                let _ = accounting_sender.send(AccountingMessage::Exit).await;
+                accounting.wait_for_exit().await;
+                let _ = server_sender.send(ServerMessage::Exit).await;
+                std::process::abort();
+            }
+            SIGTERM | SIGINT | SIGHUP | SIGQUIT => {
+                info!("Saving states before exiting...");
+                let _ = accounting_sender.send(AccountingMessage::Exit).await;
+                accounting.wait_for_exit().await;
+                let _ = server_sender.send(ServerMessage::Exit).await;
+                std::process::exit(0);
+            }
+            SIGUSR1 => {
+                debug!("Should do something useful here...");
+            }
+            SIGTSTP => {
+                warn!("Suspending is not supported");
+            }
+            _ => unreachable!(),
+        }
+    }
+}
