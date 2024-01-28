@@ -146,4 +146,9 @@ impl DB {
     // }
 
     pub async fn pay_solution(&self, solution_id: i32) -> Result<()> {
-        let conn = self.connection_pool.get().awa
+        let conn = self.connection_pool.get().await?;
+        let stmt = conn.prepare("CALL pay_solution($1)").await?;
+        conn.query(&stmt, &[&solution_id]).await?;
+        Ok(())
+    }
+}
