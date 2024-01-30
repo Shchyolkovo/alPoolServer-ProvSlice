@@ -14,4 +14,11 @@ use tokio_util::codec::{Decoder, Encoder};
 #[allow(clippy::large_enum_variant)]
 pub enum ProverMessage {
     // as in stratum, with an additional protocol version field
-    Authorize(Address<Testne
+    Authorize(Address<Testnet2>, String, u16),
+    AuthorizeResult(bool, Option<String>),
+
+    // combine notify and set_difficulty to be consistent
+    Notify(BlockTemplate<Testnet2>, u64),
+    // include block height to detect stales faster
+    Submit(u32, <Testnet2 as Network>::PoSWNonce, PoSWProof<Testnet2>),
+    // miners might want to kn
