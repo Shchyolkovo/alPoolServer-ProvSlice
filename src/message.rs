@@ -38,4 +38,14 @@ impl ProverMessage {
 
     pub fn id(&self) -> u8 {
         match self {
-   
+            ProverMessage::Authorize(..) => 0,
+            ProverMessage::AuthorizeResult(..) => 1,
+            ProverMessage::Notify(..) => 2,
+            ProverMessage::Submit(..) => 3,
+            ProverMessage::SubmitResult(..) => 4,
+
+            ProverMessage::Canary => 5,
+        }
+    }
+
+    pub fn name(&self) -> &'static str
