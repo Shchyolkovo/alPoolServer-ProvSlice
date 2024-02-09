@@ -21,4 +21,21 @@ pub enum ProverMessage {
     Notify(BlockTemplate<Testnet2>, u64),
     // include block height to detect stales faster
     Submit(u32, <Testnet2 as Network>::PoSWNonce, PoSWProof<Testnet2>),
-    // miners might want to kn
+    // miners might want to know the stale rate, optionally provide a message
+    SubmitResult(bool, Option<String>),
+
+    Canary,
+}
+
+#[allow(dead_code)]
+static VERSION: u16 = 1;
+
+impl ProverMessage {
+    #[allow(dead_code)]
+    pub fn version() -> &'static u16 {
+        &VERSION
+    }
+
+    pub fn id(&self) -> u8 {
+        match self {
+   
