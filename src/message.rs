@@ -56,4 +56,14 @@ impl ProverMessage {
             ProverMessage::Submit(..) => "Submit",
             ProverMessage::SubmitResult(..) => "SubmitResult",
 
-    
+            ProverMessage::Canary => "Canary",
+        }
+    }
+}
+
+impl Encoder<ProverMessage> for ProverMessage {
+    type Error = anyhow::Error;
+
+    fn encode(&mut self, item: ProverMessage, dst: &mut BytesMut) -> Result<(), Self::Error> {
+        dst.extend_from_slice(&0u32.to_le_bytes());
+        let mut writer = dst.writer()
