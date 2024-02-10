@@ -48,4 +48,12 @@ impl ProverMessage {
         }
     }
 
-    pub fn name(&self) -> &'static str
+    pub fn name(&self) -> &'static str {
+        match self {
+            ProverMessage::Authorize(..) => "Authorize",
+            ProverMessage::AuthorizeResult(..) => "AuthorizeResult",
+            ProverMessage::Notify(..) => "Notify",
+            ProverMessage::Submit(..) => "Submit",
+            ProverMessage::SubmitResult(..) => "SubmitResult",
+
+    
