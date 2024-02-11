@@ -66,4 +66,10 @@ impl Encoder<ProverMessage> for ProverMessage {
 
     fn encode(&mut self, item: ProverMessage, dst: &mut BytesMut) -> Result<(), Self::Error> {
         dst.extend_from_slice(&0u32.to_le_bytes());
-        let mut writer = dst.writer()
+        let mut writer = dst.writer();
+        writer.write_all(&[item.id()])?;
+        match item {
+            ProverMessage::Authorize(addr, password, version) => {
+                bincode::serialize_into(&mut writer, &addr)?;
+                bincode::serialize_into(&mut writer, &password)?;
+                writer.write_all(&version.to_le_bytes())
