@@ -72,4 +72,11 @@ impl Encoder<ProverMessage> for ProverMessage {
             ProverMessage::Authorize(addr, password, version) => {
                 bincode::serialize_into(&mut writer, &addr)?;
                 bincode::serialize_into(&mut writer, &password)?;
-                writer.write_all(&version.to_le_bytes())
+                writer.write_all(&version.to_le_bytes())?;
+            }
+            ProverMessage::AuthorizeResult(result, message) | ProverMessage::SubmitResult(result, message) => {
+                writer.write_all(&[match result {
+                    true => 1,
+                    false => 0,
+                }])?;
+                if let So
