@@ -79,4 +79,12 @@ impl Encoder<ProverMessage> for ProverMessage {
                     true => 1,
                     false => 0,
                 }])?;
-                if let So
+                if let Some(message) = message {
+                    writer.write_all(&[1])?;
+                    bincode::serialize_into(&mut writer, &message)?;
+                } else {
+                    writer.write_all(&[0])?;
+                }
+            }
+            ProverMessage::Notify(template, difficulty) => {
+                
