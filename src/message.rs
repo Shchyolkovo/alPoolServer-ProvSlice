@@ -104,4 +104,12 @@ impl Encoder<ProverMessage> for ProverMessage {
 }
 
 impl Decoder for ProverMessage {
-    type Error = anyhow::Er
+    type Error = anyhow::Error;
+    type Item = ProverMessage;
+
+    fn decode(&mut self, src: &mut BytesMut) -> Result<Option<Self::Item>, Self::Error> {
+        if src.len() < 4 {
+            return Ok(None);
+        }
+        let length = u32::from_le_bytes(src[..4].try_into().unwrap()) as usize;
+        if length > 1048
