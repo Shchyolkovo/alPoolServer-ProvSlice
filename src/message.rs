@@ -87,4 +87,10 @@ impl Encoder<ProverMessage> for ProverMessage {
                 }
             }
             ProverMessage::Notify(template, difficulty) => {
-                
+                template.write_le(&mut writer)?;
+                writer.write_all(&difficulty.to_le_bytes())?;
+            }
+            ProverMessage::Submit(height, nonce, proof) => {
+                writer.write_all(&height.to_le_bytes())?;
+                nonce.write_le(&mut writer)?;
+                proof.write_le(&mut wr
