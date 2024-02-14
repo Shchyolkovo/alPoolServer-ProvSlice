@@ -93,4 +93,15 @@ impl Encoder<ProverMessage> for ProverMessage {
             ProverMessage::Submit(height, nonce, proof) => {
                 writer.write_all(&height.to_le_bytes())?;
                 nonce.write_le(&mut writer)?;
-                proof.write_le(&mut wr
+                proof.write_le(&mut writer)?;
+            }
+            ProverMessage::Canary => return Err(anyhow!("Use of unsupported message")),
+        }
+        let msg_len = dst.len() - 4;
+        dst[..4].copy_from_slice(&(msg_len as u32).to_le_bytes());
+        Ok(())
+    }
+}
+
+impl Decoder for ProverMessage {
+    type Error = anyhow::Er
