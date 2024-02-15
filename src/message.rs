@@ -112,4 +112,15 @@ impl Decoder for ProverMessage {
             return Ok(None);
         }
         let length = u32::from_le_bytes(src[..4].try_into().unwrap()) as usize;
-        if length > 1048
+        if length > 1048576 {
+            return Err(anyhow!("Message too long"));
+        }
+        if src.len() < 4 + length {
+            return Ok(None);
+        }
+
+        let reader = &mut src.reader();
+        reader.read_u32::<LittleEndian>()?;
+        let msg_id = reader.read_u8()?;
+        let msg = match msg_id {
+            0 => 
