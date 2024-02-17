@@ -123,4 +123,10 @@ impl Decoder for ProverMessage {
         reader.read_u32::<LittleEndian>()?;
         let msg_id = reader.read_u8()?;
         let msg = match msg_id {
-            0 => 
+            0 => {
+                let addr = bincode::deserialize_from(&mut *reader)?;
+                let password = bincode::deserialize_from(&mut *reader)?;
+                let version = reader.read_u16::<LittleEndian>()?;
+                ProverMessage::Authorize(addr, password, version)
+            }
+            1
