@@ -129,4 +129,13 @@ impl Decoder for ProverMessage {
                 let version = reader.read_u16::<LittleEndian>()?;
                 ProverMessage::Authorize(addr, password, version)
             }
-            1
+            1 => {
+                let result = reader.read_u8()? == 1;
+                let message = if reader.read_u8()? == 1 {
+                    Some(bincode::deserialize_from(reader)?)
+                } else {
+                    None
+                };
+                ProverMessage::AuthorizeResult(result, message)
+            }
+    
