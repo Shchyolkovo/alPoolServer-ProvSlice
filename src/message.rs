@@ -138,4 +138,10 @@ impl Decoder for ProverMessage {
                 };
                 ProverMessage::AuthorizeResult(result, message)
             }
-    
+            2 => {
+                let template = BlockTemplate::<Testnet2>::read_le(&mut *reader)?;
+                let difficulty = reader.read_u64::<LittleEndian>()?;
+                ProverMessage::Notify(template, difficulty)
+            }
+            3 => {
+                let height = reader.read_u32
