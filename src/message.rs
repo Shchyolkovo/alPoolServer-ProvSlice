@@ -157,4 +157,11 @@ impl Decoder for ProverMessage {
                     None
                 };
                 ProverMessage::SubmitResult(result, message)
-           
+            }
+            _ => {
+                return Err(anyhow!("Unknown message id: {}", msg_id));
+            }
+        };
+        Ok(Some(msg))
+    }
+}
