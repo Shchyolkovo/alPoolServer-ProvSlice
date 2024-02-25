@@ -150,4 +150,11 @@ impl Decoder for ProverMessage {
                 ProverMessage::Submit(height, nonce, proof)
             }
             4 => {
-                l
+                let result = reader.read_u8()? == 1;
+                let message = if reader.read_u8()? == 1 {
+                    Some(bincode::deserialize_from(reader)?)
+                } else {
+                    None
+                };
+                ProverMessage::SubmitResult(result, message)
+           
