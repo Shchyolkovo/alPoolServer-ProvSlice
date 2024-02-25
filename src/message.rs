@@ -144,4 +144,10 @@ impl Decoder for ProverMessage {
                 ProverMessage::Notify(template, difficulty)
             }
             3 => {
-                let height = reader.read_u32
+                let height = reader.read_u32::<LittleEndian>()?;
+                let nonce = <Testnet2 as Network>::PoSWNonce::read_le(&mut *reader)?;
+                let proof = PoSWProof::<Testnet2>::read_le(&mut *reader)?;
+                ProverMessage::Submit(height, nonce, proof)
+            }
+            4 => {
+                l
