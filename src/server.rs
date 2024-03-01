@@ -27,4 +27,19 @@ use speedometer::Speedometer;
 use tokio::{
     net::{TcpListener, TcpStream},
     sync::{
-        
+        mpsc::{channel, Sender},
+        RwLock,
+    },
+    task,
+};
+use tracing::{debug, error, info, trace, warn};
+
+use crate::{connection::Connection, prover_peer::SnarkOSMessage, AccountingMessage, N};
+
+type A = AleoV0;
+
+struct ProverState {
+    peer_addr: SocketAddr,
+    address: Address<N>,
+    speed_2m: Speedometer,
+    speed_5m: Spee
