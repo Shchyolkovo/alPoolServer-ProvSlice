@@ -55,4 +55,7 @@ impl ProverState {
         Self {
             peer_addr,
             address,
-            speed_2m: Speed
+            speed_2m: Speedometer::init(Duration::from_secs(120)),
+            speed_5m: Speedometer::init_with_cache(Duration::from_secs(60 * 5), Duration::from_secs(30)),
+            speed_15m: Speedometer::init_with_cache(Duration::from_secs(60 * 15), Duration::from_secs(30)),
+            speed_30m: Speedometer::init_with_cache(Duration::from_s
