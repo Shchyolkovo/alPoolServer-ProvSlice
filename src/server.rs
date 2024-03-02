@@ -42,4 +42,17 @@ struct ProverState {
     peer_addr: SocketAddr,
     address: Address<N>,
     speed_2m: Speedometer,
-    speed_5m: Spee
+    speed_5m: Speedometer,
+    speed_15m: Speedometer,
+    speed_30m: Speedometer,
+    speed_1h: Speedometer,
+    current_target: u64,
+    next_target: u64,
+}
+
+impl ProverState {
+    pub fn new(peer_addr: SocketAddr, address: Address<N>) -> Self {
+        Self {
+            peer_addr,
+            address,
+            speed_2m: Speed
