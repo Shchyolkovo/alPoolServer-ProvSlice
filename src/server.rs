@@ -58,4 +58,11 @@ impl ProverState {
             speed_2m: Speedometer::init(Duration::from_secs(120)),
             speed_5m: Speedometer::init_with_cache(Duration::from_secs(60 * 5), Duration::from_secs(30)),
             speed_15m: Speedometer::init_with_cache(Duration::from_secs(60 * 15), Duration::from_secs(30)),
-            speed_30m: Speedometer::init_with_cache(Duration::from_s
+            speed_30m: Speedometer::init_with_cache(Duration::from_secs(60 * 30), Duration::from_secs(30)),
+            speed_1h: Speedometer::init_with_cache(Duration::from_secs(60 * 60), Duration::from_secs(30)),
+            current_target: 512,
+            next_target: 512,
+        }
+    }
+
+    pub async fn add_share(&mut self, value
