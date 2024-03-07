@@ -65,4 +65,11 @@ impl ProverState {
         }
     }
 
-    pub async fn add_share(&mut self, value
+    pub async fn add_share(&mut self, value: u64) {
+        let now = Instant::now();
+        self.speed_2m.event(value).await;
+        self.speed_5m.event(value).await;
+        self.speed_15m.event(value).await;
+        self.speed_30m.event(value).await;
+        self.speed_1h.event(value).await;
+        self.next_target = ((self.speed_2m.speed().await * 20.0
