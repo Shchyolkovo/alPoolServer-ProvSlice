@@ -121,4 +121,15 @@ struct PoolState {
     speed_1m: Speedometer,
     speed_5m: Speedometer,
     speed_15m: Speedometer,
-    speed_30m: Speedomete
+    speed_30m: Speedometer,
+    speed_1h: Speedometer,
+    current_global_target_modifier: f64,
+    next_global_target_modifier: f64,
+}
+
+impl PoolState {
+    pub fn new() -> Self {
+        Self {
+            speed_1m: Speedometer::init(Duration::from_secs(60)),
+            speed_5m: Speedometer::init_with_cache(Duration::from_secs(60 * 5), Duration::from_secs(30)),
+   
