@@ -80,4 +80,18 @@ impl ProverState {
         if self.next_target < ((self.current_target as f64) * 0.9) as u64
             || self.next_target > ((self.current_target as f64) * 1.1) as u64
         {
- 
+            self.current_target = self.next_target;
+        }
+        self.current_target
+    }
+
+    pub fn current_target(&self) -> u64 {
+        self.current_target
+    }
+
+    pub fn address(&self) -> Address<N> {
+        self.address
+    }
+
+    // noinspection DuplicatedCode
+    pub async fn speed(&mut self) -> Vec<f64
