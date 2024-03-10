@@ -105,4 +105,20 @@ impl ProverState {
 }
 
 impl Display for ProverState {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result 
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        let addr_str = self.address.to_string();
+        write!(
+            f,
+            "{} ({}...{})",
+            self.peer_addr,
+            &addr_str[0..11],
+            &addr_str[addr_str.len() - 6..]
+        )
+    }
+}
+
+struct PoolState {
+    speed_1m: Speedometer,
+    speed_5m: Speedometer,
+    speed_15m: Speedometer,
+    speed_30m: Speedomete
