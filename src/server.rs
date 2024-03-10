@@ -72,4 +72,12 @@ impl ProverState {
         self.speed_15m.event(value).await;
         self.speed_30m.event(value).await;
         self.speed_1h.event(value).await;
-        self.next_target = ((self.speed_2m.speed().await * 20.0
+        self.next_target = ((self.speed_2m.speed().await * 20.0) as u64).max(1);
+        debug!("add_share took {} us", now.elapsed().as_micros());
+    }
+
+    pub async fn next_target(&mut self) -> u64 {
+        if self.next_target < ((self.current_target as f64) * 0.9) as u64
+            || self.next_target > ((self.current_target as f64) * 1.1) as u64
+        {
+ 
