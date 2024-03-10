@@ -94,4 +94,15 @@ impl ProverState {
     }
 
     // noinspection DuplicatedCode
-    pub async fn speed(&mut self) -> Vec<f64
+    pub async fn speed(&mut self) -> Vec<f64> {
+        vec![
+            self.speed_5m.speed().await,
+            self.speed_15m.speed().await,
+            self.speed_30m.speed().await,
+            self.speed_1h.speed().await,
+        ]
+    }
+}
+
+impl Display for ProverState {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result 
