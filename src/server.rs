@@ -134,4 +134,14 @@ impl PoolState {
             speed_5m: Speedometer::init_with_cache(Duration::from_secs(60 * 5), Duration::from_secs(30)),
             speed_15m: Speedometer::init_with_cache(Duration::from_secs(60 * 15), Duration::from_secs(30)),
             speed_30m: Speedometer::init_with_cache(Duration::from_secs(60 * 30), Duration::from_secs(30)),
-            speed_1h: Speedometer::init_with_cache(Duration::from_secs(60 * 60), Duration::
+            speed_1h: Speedometer::init_with_cache(Duration::from_secs(60 * 60), Duration::from_secs(30)),
+            current_global_target_modifier: 1.0,
+            next_global_target_modifier: 1.0,
+        }
+    }
+
+    pub async fn add_share(&mut self, value: u64) {
+        let now = Instant::now();
+        self.speed_1m.event(1).await;
+        self.speed_5m.event(value).await;
+ 
