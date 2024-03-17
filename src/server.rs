@@ -156,4 +156,15 @@ impl PoolState {
         self.current_global_target_modifier = self.next_global_target_modifier;
         if self.current_global_target_modifier > 1.0 {
             info!(
- 
+                "Current global target modifier: {}",
+                self.current_global_target_modifier
+            );
+        }
+        self.current_global_target_modifier
+    }
+
+    pub fn current_global_target_modifier(&self) -> f64 {
+        self.current_global_target_modifier
+    }
+
+    // noinspecti
