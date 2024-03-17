@@ -144,4 +144,9 @@ impl PoolState {
         let now = Instant::now();
         self.speed_1m.event(1).await;
         self.speed_5m.event(value).await;
- 
+        self.speed_15m.event(value).await;
+        self.speed_30m.event(value).await;
+        self.speed_1h.event(value).await;
+        self.next_global_target_modifier = (self.speed_1m.speed().await / 200.0).max(1f64);
+        // todo: make adjustable through admin api
+        debug!
