@@ -180,4 +180,14 @@ impl PoolState {
 
 #[allow(clippy::large_enum_variant)]
 #[derive(Debug)]
-pub enum 
+pub enum ServerMessage {
+    ProverConnected(TcpStream, SocketAddr),
+    ProverAuthenticated(SocketAddr, Address<N>, Sender<StratumMessage>),
+    ProverDisconnected(SocketAddr),
+    ProverSubmit(Id, SocketAddr, u32, u64),
+    NewEpochHash(<N as Network>::BlockHash, u32, u64),
+    Exit,
+}
+
+impl ServerMessage {
+    fn name(&self) -> &'st
