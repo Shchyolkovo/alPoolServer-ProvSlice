@@ -167,4 +167,17 @@ impl PoolState {
         self.current_global_target_modifier
     }
 
-    // noinspecti
+    // noinspection DuplicatedCode
+    pub async fn speed(&mut self) -> Vec<f64> {
+        vec![
+            self.speed_5m.speed().await,
+            self.speed_15m.speed().await,
+            self.speed_30m.speed().await,
+            self.speed_1h.speed().await,
+        ]
+    }
+}
+
+#[allow(clippy::large_enum_variant)]
+#[derive(Debug)]
+pub enum 
