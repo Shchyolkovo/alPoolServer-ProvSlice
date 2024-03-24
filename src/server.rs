@@ -209,4 +209,11 @@ impl Display for ServerMessage {
 }
 
 pub struct Server {
-    sender: Sender<ServerMes
+    sender: Sender<ServerMessage>,
+    prover_sender: Arc<Sender<SnarkOSMessage>>,
+    accounting_sender: Sender<AccountingMessage>,
+    pool_address: Address<N>,
+    connected_provers: RwLock<HashSet<SocketAddr>>,
+    authenticated_provers: Arc<RwLock<HashMap<SocketAddr, Sender<StratumMessage>>>>,
+    pool_state: Arc<RwLock<PoolState>>,
+    prover_state
