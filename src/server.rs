@@ -190,4 +190,10 @@ pub enum ServerMessage {
 }
 
 impl ServerMessage {
-    fn name(&self) -> &'st
+    fn name(&self) -> &'static str {
+        match self {
+            ServerMessage::ProverConnected(..) => "ProverConnected",
+            ServerMessage::ProverAuthenticated(..) => "ProverAuthenticated",
+            ServerMessage::ProverDisconnected(..) => "ProverDisconnected",
+            ServerMessage::ProverSubmit(..) => "ProverSubmit",
+            ServerMessage
