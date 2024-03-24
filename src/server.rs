@@ -196,4 +196,17 @@ impl ServerMessage {
             ServerMessage::ProverAuthenticated(..) => "ProverAuthenticated",
             ServerMessage::ProverDisconnected(..) => "ProverDisconnected",
             ServerMessage::ProverSubmit(..) => "ProverSubmit",
-            ServerMessage
+            ServerMessage::NewEpochHash(..) => "NewEpochChallenge",
+            ServerMessage::Exit => "Exit",
+        }
+    }
+}
+
+impl Display for ServerMessage {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.name())
+    }
+}
+
+pub struct Server {
+    sender: Sender<ServerMes
