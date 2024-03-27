@@ -221,4 +221,15 @@ pub struct Server {
     latest_epoch_number: AtomicU32,
     latest_epoch_hash: Arc<RwLock<Option<<N as Network>::BlockHash>>>,
     latest_proof_target: AtomicU64,
-    nonce_seen: Arc<FlurryHashSe
+    nonce_seen: Arc<FlurryHashSet<u64>>,
+    puzzle: Puzzle<N>,
+}
+
+impl Server {
+    pub async fn init(
+        port: u16,
+        address: Address<N>,
+        prover_sender: Arc<Sender<SnarkOSMessage>>,
+        accounting_sender: Sender<AccountingMessage>,
+    ) -> Arc<Server> {
+        let (sender, mut receiver) = channel(
