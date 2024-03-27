@@ -216,4 +216,9 @@ pub struct Server {
     connected_provers: RwLock<HashSet<SocketAddr>>,
     authenticated_provers: Arc<RwLock<HashMap<SocketAddr, Sender<StratumMessage>>>>,
     pool_state: Arc<RwLock<PoolState>>,
-    prover_state
+    prover_states: Arc<RwLock<HashMap<SocketAddr, RwLock<ProverState>>>>,
+    prover_address_connections: Arc<RwLock<HashMap<Address<N>, HashSet<SocketAddr>>>>,
+    latest_epoch_number: AtomicU32,
+    latest_epoch_hash: Arc<RwLock<Option<<N as Network>::BlockHash>>>,
+    latest_proof_target: AtomicU64,
+    nonce_seen: Arc<FlurryHashSe
