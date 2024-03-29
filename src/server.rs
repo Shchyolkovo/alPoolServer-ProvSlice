@@ -249,4 +249,11 @@ impl Server {
 
         let server = Arc::new(Server {
             sender,
-            p
+            prover_sender,
+            accounting_sender,
+            pool_address: address,
+            connected_provers: Default::default(),
+            authenticated_provers: Default::default(),
+            pool_state: Arc::new(RwLock::new(PoolState::new())),
+            prover_states: Default::default(),
+            prover_addr
