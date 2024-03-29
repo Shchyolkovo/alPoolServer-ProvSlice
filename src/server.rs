@@ -238,4 +238,15 @@ impl Server {
             Ok(listener) => {
                 let local_ip = listener.local_addr().expect("Could not get local ip");
                 info!("Listening on {}", local_ip);
-           
+                (local_ip, listener)
+            }
+            Err(e) => {
+                panic!("Unable to start the server: {:?}", e);
+            }
+        };
+
+        let puzzle = Puzzle::<N>::new::<SynthesisPuzzle<N, A>>();
+
+        let server = Arc::new(Server {
+            sender,
+            p
