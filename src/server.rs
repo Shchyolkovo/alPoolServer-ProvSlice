@@ -232,4 +232,10 @@ impl Server {
         prover_sender: Arc<Sender<SnarkOSMessage>>,
         accounting_sender: Sender<AccountingMessage>,
     ) -> Arc<Server> {
-        let (sender, mut receiver) = channel(
+        let (sender, mut receiver) = channel(1024);
+
+        let (_, listener) = match TcpListener::bind(format!("0.0.0.0:{}", port)).await {
+            Ok(listener) => {
+                let local_ip = listener.local_addr().expect("Could not get local ip");
+                info!("Listening on {}", local_ip);
+           
