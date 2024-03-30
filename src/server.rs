@@ -256,4 +256,9 @@ impl Server {
             authenticated_provers: Default::default(),
             pool_state: Arc::new(RwLock::new(PoolState::new())),
             prover_states: Default::default(),
-            prover_addr
+            prover_address_connections: Default::default(),
+            latest_epoch_number: AtomicU32::new(0),
+            latest_epoch_hash: Default::default(),
+            latest_proof_target: AtomicU64::new(u64::MAX),
+            nonce_seen: Arc::new(FlurryHashSet::with_capacity(10 << 20)),
+          
