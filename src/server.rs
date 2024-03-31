@@ -261,4 +261,15 @@ impl Server {
             latest_epoch_hash: Default::default(),
             latest_proof_target: AtomicU64::new(u64::MAX),
             nonce_seen: Arc::new(FlurryHashSet::with_capacity(10 << 20)),
-          
+            puzzle,
+        });
+
+        // clear nonce
+        {
+            let nonce = server.nonce_seen.clone();
+            let mut ticker = tokio::time::interval(Duration::from_secs(60));
+            task::spawn(async move {
+                loop {
+                    ticker.tick().await;
+                    nonce.pin().clear()
+             
