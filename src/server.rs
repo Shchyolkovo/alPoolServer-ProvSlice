@@ -272,4 +272,14 @@ impl Server {
                 loop {
                     ticker.tick().await;
                     nonce.pin().clear()
-             
+                }
+            });
+        }
+
+        let s = server.clone();
+        task::spawn(async move {
+            loop {
+                match listener.accept().await {
+                    Ok((stream, peer_addr)) => {
+                        info!("New connection from: {}", peer_addr);
+                        if let Err(e) = s.sender
