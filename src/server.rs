@@ -288,4 +288,15 @@ impl Server {
                     }
                     Err(e) => {
                         error!("Error accepting connection: {:?}", e);
-                 
+                    }
+                }
+            }
+        });
+
+        let s = server.clone();
+        task::spawn(async move {
+            let server = s.clone();
+            while let Some(msg) = receiver.recv().await {
+                let server = server.clone();
+                task::spawn(async move {
+             
