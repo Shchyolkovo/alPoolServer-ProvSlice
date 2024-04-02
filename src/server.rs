@@ -299,4 +299,20 @@ impl Server {
             while let Some(msg) = receiver.recv().await {
                 let server = server.clone();
                 task::spawn(async move {
-             
+                    server.process_message(msg).await;
+                });
+            }
+        });
+
+        server
+    }
+
+    fn seen_nonce(nonce_seen: Arc<FlurryHashSet<u64>>, nonce: u64) -> bool {
+        !nonce_seen.pin().insert(nonce)
+    }
+
+    fn clear_nonce(&self) {
+        self.nonce_seen.pin().clear()
+    }
+
+    pub fn send
