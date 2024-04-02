@@ -282,4 +282,10 @@ impl Server {
                 match listener.accept().await {
                     Ok((stream, peer_addr)) => {
                         info!("New connection from: {}", peer_addr);
-                        if let Err(e) = s.sender
+                        if let Err(e) = s.sender.send(ServerMessage::ProverConnected(stream, peer_addr)).await {
+                            error!("Error accepting connection: {}", e);
+                        }
+                    }
+                    Err(e) => {
+                        error!("Error accepting connection: {:?}", e);
+                 
