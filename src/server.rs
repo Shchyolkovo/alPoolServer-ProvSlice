@@ -323,4 +323,10 @@ impl Server {
         trace!("Received message: {}", msg);
         match msg {
             ServerMessage::ProverConnected(stream, peer_addr) => {
-                self.connected_provers.write
+                self.connected_provers.write().await.insert(peer_addr);
+                Connection::init(stream, peer_addr, self.sender.clone(), self.pool_address).await;
+            }
+            ServerMessage::ProverAuthenticated(peer_addr, address, sender) => {
+                self.authenticated_provers
+                    .write()
+          
