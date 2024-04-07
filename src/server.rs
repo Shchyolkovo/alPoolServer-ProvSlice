@@ -329,4 +329,10 @@ impl Server {
             ServerMessage::ProverAuthenticated(peer_addr, address, sender) => {
                 self.authenticated_provers
                     .write()
-          
+                    .await
+                    .insert(peer_addr, sender.clone());
+                self.prover_states
+                    .write()
+                    .await
+                    .insert(peer_addr, ProverState::new(peer_addr, address).into());
+                let mut pac_write = self.prover_ad
