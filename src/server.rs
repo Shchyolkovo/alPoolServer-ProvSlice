@@ -335,4 +335,11 @@ impl Server {
                     .write()
                     .await
                     .insert(peer_addr, ProverState::new(peer_addr, address).into());
-                let mut pac_write = self.prover_ad
+                let mut pac_write = self.prover_address_connections.write().await;
+                if let Some(address) = pac_write.get_mut(&address) {
+                    address.insert(peer_addr);
+                } else {
+                    pac_write.insert(address, HashSet::from([peer_addr]));
+                }
+                drop(pac_write);
+       
