@@ -315,4 +315,12 @@ impl Server {
         self.nonce_seen.pin().clear()
     }
 
-    pub fn send
+    pub fn sender(&self) -> Sender<ServerMessage> {
+        self.sender.clone()
+    }
+
+    pub async fn process_message(&self, msg: ServerMessage) {
+        trace!("Received message: {}", msg);
+        match msg {
+            ServerMessage::ProverConnected(stream, peer_addr) => {
+                self.connected_provers.write
