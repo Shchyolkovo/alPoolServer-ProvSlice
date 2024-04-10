@@ -346,4 +346,9 @@ impl Server {
                     error!("Error sending initial target to prover: {}", e);
                 }
                 if let Some(epoch_challenge) = self.latest_epoch_hash.read().await.as_ref() {
-                    let job_id = hex::encod
+                    let job_id = hex::encode(self.latest_epoch_number.load(Ordering::SeqCst).to_le_bytes());
+                    if let Err(e) = sender
+                        .send(StratumMessage::Notify(
+                            job_id,
+                            hex::encode(epoch_challenge.to_bytes_le().unwrap()),
+     
