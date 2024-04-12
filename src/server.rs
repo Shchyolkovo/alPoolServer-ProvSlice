@@ -351,4 +351,12 @@ impl Server {
                         .send(StratumMessage::Notify(
                             job_id,
                             hex::encode(epoch_challenge.to_bytes_le().unwrap()),
+                            None,
+                            true,
+                        ))
+                        .await
+                    {
+                        error!(
+                            "Error sending initial epoch challenge to prover {} ({}): {}",
+                            peer_addr, address, e
      
