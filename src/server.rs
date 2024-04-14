@@ -366,4 +366,10 @@ impl Server {
             ServerMessage::ProverDisconnected(peer_addr) => {
                 let state = self.prover_states.write().await.remove(&peer_addr);
                 let address = match state {
-                    Some(state) => Some(s
+                    Some(state) => Some(state.read().await.address()),
+                    None => None,
+                };
+                if address.is_some() {
+                    let mut pac_write = self.prover_address_connections.write().await;
+                    let pac = pac_write.get_mut(&address.unwrap());
+          
