@@ -359,4 +359,11 @@ impl Server {
                         error!(
                             "Error sending initial epoch challenge to prover {} ({}): {}",
                             peer_addr, address, e
-     
+                        );
+                    }
+                }
+            }
+            ServerMessage::ProverDisconnected(peer_addr) => {
+                let state = self.prover_states.write().await.remove(&peer_addr);
+                let address = match state {
+                    Some(state) => Some(s
