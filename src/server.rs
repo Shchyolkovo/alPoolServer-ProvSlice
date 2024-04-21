@@ -372,4 +372,11 @@ impl Server {
                 if address.is_some() {
                     let mut pac_write = self.prover_address_connections.write().await;
                     let pac = pac_write.get_mut(&address.unwrap());
-          
+                    if let Some(pac) = pac {
+                        pac.remove(&peer_addr);
+                        if pac.is_empty() {
+                            pac_write.remove(&address.unwrap());
+                        }
+                    }
+                }
+                self.connected_provers.wri
