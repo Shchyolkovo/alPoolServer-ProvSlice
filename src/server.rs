@@ -379,4 +379,9 @@ impl Server {
                         }
                     }
                 }
-                self.connected_provers.wri
+                self.connected_provers.write().await.remove(&peer_addr);
+                self.authenticated_provers.write().await.remove(&peer_addr);
+            }
+            ServerMessage::NewEpochHash(epoch_hash, epoch_number, proof_target) => {
+                let latest_epoch = self.latest_epoch_number.load(Ordering::SeqCst);
+                if latest_epoch
