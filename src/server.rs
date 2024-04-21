@@ -384,4 +384,8 @@ impl Server {
             }
             ServerMessage::NewEpochHash(epoch_hash, epoch_number, proof_target) => {
                 let latest_epoch = self.latest_epoch_number.load(Ordering::SeqCst);
-                if latest_epoch
+                if latest_epoch < epoch_number || (epoch_number == 0 && latest_epoch == 0) {
+                    info!("New epoch: {}", epoch_number);
+                    self.latest_epoch_number.store(epoch_number, Ordering::SeqCst);
+                    self.latest_epoch_hash.write().await.replace(epoch_hash.clone());
+                    self.clear_n
