@@ -388,4 +388,11 @@ impl Server {
                     info!("New epoch: {}", epoch_number);
                     self.latest_epoch_number.store(epoch_number, Ordering::SeqCst);
                     self.latest_epoch_hash.write().await.replace(epoch_hash.clone());
-                    self.clear_n
+                    self.clear_nonce();
+                }
+                if epoch_number < latest_epoch {
+                    return;
+                }
+                info!("Updating target to {}", proof_target);
+                self.latest_proof_target.store(proof_target, Ordering::SeqCst);
+               
