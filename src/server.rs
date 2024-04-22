@@ -402,4 +402,7 @@ impl Server {
                 {
                     error!("Error sending accounting message: {}", e);
                 }
-                let global_difficulty_mo
+                let global_difficulty_modifier = self.pool_state.write().await.next_global_target_modifier().await;
+                debug!("Global difficulty modifier: {}", global_difficulty_modifier);
+                let job_id = hex::encode(epoch_number.to_le_bytes());
+                let epoch_challenge_hex = hex::encode(epoch_hash.to_bytes_le().u
