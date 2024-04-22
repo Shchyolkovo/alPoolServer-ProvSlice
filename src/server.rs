@@ -395,4 +395,11 @@ impl Server {
                 }
                 info!("Updating target to {}", proof_target);
                 self.latest_proof_target.store(proof_target, Ordering::SeqCst);
-               
+                if let Err(e) = self
+                    .accounting_sender
+                    .send(AccountingMessage::SetN(proof_target * 5))
+                    .await
+                {
+                    error!("Error sending accounting message: {}", e);
+                }
+                let global_difficulty_mo
