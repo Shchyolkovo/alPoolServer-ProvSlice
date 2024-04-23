@@ -410,4 +410,11 @@ impl Server {
                     let states = self.prover_states.read().await;
                     let prover_state = match states.get(peer_addr) {
                         Some(state) => state,
-     
+                        None => {
+                            error!("Prover state not found for peer: {}", peer_addr);
+                            continue;
+                        }
+                    };
+
+                    let prover_display = format!("{}", prover_state.read().await);
+               
