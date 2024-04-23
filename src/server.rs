@@ -405,4 +405,9 @@ impl Server {
                 let global_difficulty_modifier = self.pool_state.write().await.next_global_target_modifier().await;
                 debug!("Global difficulty modifier: {}", global_difficulty_modifier);
                 let job_id = hex::encode(epoch_number.to_le_bytes());
-                let epoch_challenge_hex = hex::encode(epoch_hash.to_bytes_le().u
+                let epoch_challenge_hex = hex::encode(epoch_hash.to_bytes_le().unwrap());
+                for (peer_addr, sender) in self.authenticated_provers.read().await.clone().iter() {
+                    let states = self.prover_states.read().await;
+                    let prover_state = match states.get(peer_addr) {
+                        Some(state) => state,
+     
