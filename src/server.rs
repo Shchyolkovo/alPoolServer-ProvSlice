@@ -417,4 +417,9 @@ impl Server {
                     };
 
                     let prover_display = format!("{}", prover_state.read().await);
-               
+                    let current_difficulty = prover_state.read().await.current_target();
+                    let mut next_difficulty =
+                        (prover_state.write().await.next_target().await as f64 * global_difficulty_modifier) as u64;
+                    drop(states);
+                    if next_difficulty > proof_target {
+        
