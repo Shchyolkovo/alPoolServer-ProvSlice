@@ -422,4 +422,9 @@ impl Server {
                         (prover_state.write().await.next_target().await as f64 * global_difficulty_modifier) as u64;
                     drop(states);
                     if next_difficulty > proof_target {
-        
+                        next_difficulty = proof_target;
+                    }
+                    if current_difficulty != next_difficulty {
+                        if let Err(e) = sender.send(StratumMessage::SetTarget(next_difficulty)).await {
+                            error!("Error sending difficulty target to prover {}: {}", prover_display, e);
+    
