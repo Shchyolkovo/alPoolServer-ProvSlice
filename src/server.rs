@@ -427,4 +427,12 @@ impl Server {
                     if current_difficulty != next_difficulty {
                         if let Err(e) = sender.send(StratumMessage::SetTarget(next_difficulty)).await {
                             error!("Error sending difficulty target to prover {}: {}", prover_display, e);
-    
+                        }
+                    }
+                    if let Err(e) = sender
+                        .send(StratumMessage::Notify(
+                            job_id.clone(),
+                            epoch_challenge_hex.clone(),
+                            None,
+                            true,
+                       
