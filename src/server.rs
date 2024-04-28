@@ -442,4 +442,9 @@ impl Server {
                     }
                 }
             }
-            ServerMessage::ProverSubmit(id, peer_addr, epoch_numb
+            ServerMessage::ProverSubmit(id, peer_addr, epoch_number, counter) => {
+                let prover_states = self.prover_states.clone();
+                let pool_state = self.pool_state.clone();
+                let authenticated_provers = self.authenticated_provers.clone();
+                let latest_epoch_number = self.latest_epoch_number.load(Ordering::SeqCst);
+   
