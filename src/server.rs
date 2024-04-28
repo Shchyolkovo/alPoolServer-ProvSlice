@@ -435,4 +435,11 @@ impl Server {
                             epoch_challenge_hex.clone(),
                             None,
                             true,
-                       
+                        ))
+                        .await
+                    {
+                        error!("Error sending block template to prover {}: {}", prover_display, e);
+                    }
+                }
+            }
+            ServerMessage::ProverSubmit(id, peer_addr, epoch_numb
