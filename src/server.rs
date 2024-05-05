@@ -447,4 +447,7 @@ impl Server {
                 let pool_state = self.pool_state.clone();
                 let authenticated_provers = self.authenticated_provers.clone();
                 let latest_epoch_number = self.latest_epoch_number.load(Ordering::SeqCst);
-   
+                let current_global_difficulty_modifier = self.pool_state.read().await.current_global_target_modifier();
+                let latest_epoch_hash = self.latest_epoch_hash.clone();
+                let accounting_sender = self.accounting_sender.clone();
+                let prover_sender = 
