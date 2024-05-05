@@ -450,4 +450,9 @@ impl Server {
                 let current_global_difficulty_modifier = self.pool_state.read().await.current_global_target_modifier();
                 let latest_epoch_hash = self.latest_epoch_hash.clone();
                 let accounting_sender = self.accounting_sender.clone();
-                let prover_sender = 
+                let prover_sender = self.prover_sender.clone();
+                let seen_nonce = self.nonce_seen.clone();
+                let global_proof_target = self.latest_proof_target.load(Ordering::SeqCst);
+                let pool_address = self.pool_address;
+                let puzzle = self.puzzle.clone();
+                task::spawn(async move 
