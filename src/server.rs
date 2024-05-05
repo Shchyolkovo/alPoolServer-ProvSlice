@@ -455,4 +455,12 @@ impl Server {
                 let global_proof_target = self.latest_proof_target.load(Ordering::SeqCst);
                 let pool_address = self.pool_address;
                 let puzzle = self.puzzle.clone();
-                task::spawn(async move 
+                task::spawn(async move {
+                    async fn send_result(
+                        sender: &Sender<StratumMessage>,
+                        id: Id,
+                        result: bool,
+                        error_code: Option<ErrorCode>,
+                        desc: Option<String>,
+                    ) {
+                      
