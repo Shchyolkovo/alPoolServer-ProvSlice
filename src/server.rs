@@ -468,4 +468,10 @@ impl Server {
                                 .send(StratumMessage::Response(id, Some(ResponseParams::Bool(true)), None))
                                 .await
                             {
-                                error!("Error sending result to
+                                error!("Error sending result to prover: {}", e);
+                            }
+                        } else if let Err(e) = sender
+                            .send(StratumMessage::Response(
+                                id,
+                                None,
+                                Some(Error::with_custom
