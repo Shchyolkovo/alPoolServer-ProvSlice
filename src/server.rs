@@ -463,4 +463,9 @@ impl Server {
                         error_code: Option<ErrorCode>,
                         desc: Option<String>,
                     ) {
-                      
+                        if result {
+                            if let Err(e) = sender
+                                .send(StratumMessage::Response(id, Some(ResponseParams::Bool(true)), None))
+                                .await
+                            {
+                                error!("Error sending result to
