@@ -474,4 +474,11 @@ impl Server {
                             .send(StratumMessage::Response(
                                 id,
                                 None,
-                                Some(Error::with_custom
+                                Some(Error::with_custom_msg(error_code.unwrap(), desc.unwrap().as_str())),
+                            ))
+                            .await
+                        {
+                            error!("Error sending result to prover: {}", e);
+                        }
+                    }
+                    let provers = authenticated_provers.r
