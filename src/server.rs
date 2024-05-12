@@ -486,4 +486,11 @@ impl Server {
                     let sender = match provers.get(&peer_addr) {
                         Some(sender) => sender,
                         None => {
-                            error!("Sender not found for peer: {}
+                            error!("Sender not found for peer: {}", peer_addr);
+                            return;
+                        }
+                    };
+                    let prover_state = match states.get(&peer_addr) {
+                        Some(state) => state,
+                        None => {
+                            error!("
