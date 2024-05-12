@@ -493,4 +493,10 @@ impl Server {
                     let prover_state = match states.get(&peer_addr) {
                         Some(state) => state,
                         None => {
-                            error!("
+                            error!("Received solution from unknown prover: {}", peer_addr);
+                            send_result(
+                                sender,
+                                id,
+                                false,
+                                Some(ErrorCode::from_code(24)),
+                                Some("Unknown pro
