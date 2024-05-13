@@ -499,4 +499,11 @@ impl Server {
                                 id,
                                 false,
                                 Some(ErrorCode::from_code(24)),
-                                Some("Unknown pro
+                                Some("Unknown prover".to_string()),
+                            )
+                            .await;
+                            return;
+                        }
+                    };
+                    let prover_display = format!("{}", prover_state.read().await);
+                    let epoch_hash = matc
