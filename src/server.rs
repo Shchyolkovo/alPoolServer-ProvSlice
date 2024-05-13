@@ -506,4 +506,9 @@ impl Server {
                         }
                     };
                     let prover_display = format!("{}", prover_state.read().await);
-                    let epoch_hash = matc
+                    let epoch_hash = match latest_epoch_hash.read().await.clone() {
+                        Some(template) => template,
+                        None => {
+                            warn!(
+                                "Received solution from prover {} while no epoch challenge is available",
+                                prover
