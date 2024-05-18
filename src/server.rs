@@ -511,4 +511,11 @@ impl Server {
                         None => {
                             warn!(
                                 "Received solution from prover {} while no epoch challenge is available",
-                                prover
+                                prover_display
+                            );
+                            send_result(
+                                sender,
+                                id,
+                                false,
+                                Some(ErrorCode::from_code(21)),
+                                Some("No epoch challenge".to_s
