@@ -518,4 +518,12 @@ impl Server {
                                 id,
                                 false,
                                 Some(ErrorCode::from_code(21)),
-                                Some("No epoch challenge".to_s
+                                Some("No epoch challenge".to_string()),
+                            )
+                            .await;
+                            return;
+                        }
+                    };
+                    if epoch_number != latest_epoch_number {
+                        info!(
+                            "Received stale solution from prove
