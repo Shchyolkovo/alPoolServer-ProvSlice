@@ -526,4 +526,11 @@ impl Server {
                     };
                     if epoch_number != latest_epoch_number {
                         info!(
-                            "Received stale solution from prove
+                            "Received stale solution from prover {} with epoch number: {} (expected {})",
+                            prover_display, epoch_number, latest_epoch_number
+                        );
+                        send_result(
+                            sender,
+                            id,
+                            false,
+                         
