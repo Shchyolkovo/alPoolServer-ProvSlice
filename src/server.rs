@@ -533,4 +533,11 @@ impl Server {
                             sender,
                             id,
                             false,
-                         
+                            Some(ErrorCode::from_code(21)),
+                            Some("Stale solution".to_string()),
+                        )
+                        .await;
+                        return;
+                    }
+                    if Server::seen_nonce(seen_nonce, counter) {
+                        warn!("Received duplicate nonce from p
