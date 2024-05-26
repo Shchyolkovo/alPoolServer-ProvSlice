@@ -540,4 +540,11 @@ impl Server {
                         return;
                     }
                     if Server::seen_nonce(seen_nonce, counter) {
-                        warn!("Received duplicate nonce from p
+                        warn!("Received duplicate nonce from prover {}", prover_display);
+                        send_result(
+                            sender,
+                            id,
+                            false,
+                            Some(ErrorCode::from_code(22)),
+                            Some("Duplicate nonce".to_string()),
+        
