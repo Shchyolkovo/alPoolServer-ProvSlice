@@ -557,4 +557,12 @@ impl Server {
                         prover_target = global_proof_target;
                     }
                     let partial_solution = match PartialSolution::new(epoch_hash, pool_address, counter) {
-                        Ok(partial_solution) => partial_solution
+                        Ok(partial_solution) => partial_solution,
+                        Err(e) => {
+                            warn!(
+                                "Failed to construct partial solution from prover {}: {}",
+                                prover_display, e
+                            );
+                            send_result(
+                                sender,
+ 
