@@ -553,4 +553,8 @@ impl Server {
                     }
                     let mut prover_target =
                         (prover_state.read().await.current_target() as f64 * current_global_difficulty_modifier) as u64;
-            
+                    if prover_target > global_proof_target {
+                        prover_target = global_proof_target;
+                    }
+                    let partial_solution = match PartialSolution::new(epoch_hash, pool_address, counter) {
+                        Ok(partial_solution) => partial_solution
