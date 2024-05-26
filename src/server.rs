@@ -547,4 +547,10 @@ impl Server {
                             false,
                             Some(ErrorCode::from_code(22)),
                             Some("Duplicate nonce".to_string()),
-        
+                        )
+                        .await;
+                        return;
+                    }
+                    let mut prover_target =
+                        (prover_state.read().await.current_target() as f64 * current_global_difficulty_modifier) as u64;
+            
