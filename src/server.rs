@@ -565,4 +565,10 @@ impl Server {
                             );
                             send_result(
                                 sender,
- 
+                                id,
+                                false,
+                                Some(ErrorCode::from_code(20)),
+                                Some("Invalid partial solution".to_string()),
+                            )
+                            .await;
+                
