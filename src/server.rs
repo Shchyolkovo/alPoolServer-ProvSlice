@@ -571,4 +571,11 @@ impl Server {
                                 Some("Invalid partial solution".to_string()),
                             )
                             .await;
+                            return;
+                        }
+                    };
+                    let proof_target = match puzzle.get_proof_target_from_partial_solution(&partial_solution) {
+                        Ok(proof_target) => proof_target,
+                        Err(e) => {
+                            warn!(
                 
