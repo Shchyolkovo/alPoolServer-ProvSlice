@@ -578,4 +578,10 @@ impl Server {
                         Ok(proof_target) => proof_target,
                         Err(e) => {
                             warn!(
-                
+                                "Failed to get proof target from partial solution from prover {}: {}",
+                                prover_display, e
+                            );
+                            send_result(
+                                sender,
+                                id,
+                               
