@@ -593,3 +593,9 @@ impl Server {
                         }
                     };
 
+                    if proof_target < prover_target {
+                        warn!(
+                            "Received solution with target {} from prover {} (expected {})",
+                            proof_target, prover_display, prover_target
+                        );
+                        send_r
