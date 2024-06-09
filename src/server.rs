@@ -598,4 +598,12 @@ impl Server {
                             "Received solution with target {} from prover {} (expected {})",
                             proof_target, prover_display, prover_target
                         );
-                        send_r
+                        send_result(
+                            sender,
+                            id,
+                            false,
+                            Some(ErrorCode::from_code(23)),
+                            Some("Difficulty target not met".to_string()),
+                        )
+                        .await;
+                
