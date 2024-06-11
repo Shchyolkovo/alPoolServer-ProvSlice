@@ -606,4 +606,11 @@ impl Server {
                             Some("Difficulty target not met".to_string()),
                         )
                         .await;
-                
+                        return;
+                    }
+
+                    let solution = Solution::new(partial_solution, proof_target);
+
+                    prover_state.write().await.add_share(prover_target).await;
+                    pool_state.write().await.add_share(prover_target).await;
+                    if let Err(e) =
