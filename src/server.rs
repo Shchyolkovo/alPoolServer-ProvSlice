@@ -613,4 +613,10 @@ impl Server {
 
                     prover_state.write().await.add_share(prover_target).await;
                     pool_state.write().await.add_share(prover_target).await;
-                    if let Err(e) =
+                    if let Err(e) = accounting_sender
+                        .send(AccountingMessage::NewShare(
+                            prover_state.read().await.address().to_string(),
+                            proof_target.min(global_proof_target * 2),
+                        ))
+                        .await
+               
