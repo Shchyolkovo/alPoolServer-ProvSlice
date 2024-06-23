@@ -626,4 +626,10 @@ impl Server {
                     drop(provers);
                     drop(states);
                     debug!(
-                        "Received valid solution fro
+                        "Received valid solution from prover {} with target {}",
+                        prover_display, proof_target
+                    );
+                    // TODO: testnet3 rewards
+                    if proof_target >= global_proof_target {
+                        info!(
+                            "Received unconfirmed solution from prover {} w
