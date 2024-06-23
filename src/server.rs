@@ -619,4 +619,11 @@ impl Server {
                             proof_target.min(global_proof_target * 2),
                         ))
                         .await
-               
+                    {
+                        error!("Failed to send accounting message: {}", e);
+                    }
+                    send_result(sender, id, true, None, None).await;
+                    drop(provers);
+                    drop(states);
+                    debug!(
+                        "Received valid solution fro
