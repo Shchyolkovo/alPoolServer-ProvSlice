@@ -632,4 +632,9 @@ impl Server {
                     // TODO: testnet3 rewards
                     if proof_target >= global_proof_target {
                         info!(
-                            "Received unconfirmed solution from prover {} w
+                            "Received unconfirmed solution from prover {} with solution target {} (target {})",
+                            prover_display, proof_target, global_proof_target
+                        );
+                        // TODO: dummy operator
+                        if let Err(e) = prover_sender
+                            .send(SnarkOSMessage::UnconfirmedSoluti
