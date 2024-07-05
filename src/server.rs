@@ -637,4 +637,10 @@ impl Server {
                         );
                         // TODO: dummy operator
                         if let Err(e) = prover_sender
-                            .send(SnarkOSMessage::UnconfirmedSoluti
+                            .send(SnarkOSMessage::UnconfirmedSolution(UnconfirmedSolution {
+                                solution_id: solution.id(),
+                                solution: Data::Object(solution),
+                            }))
+                            .await
+                        {
+                            error!("Failed to
