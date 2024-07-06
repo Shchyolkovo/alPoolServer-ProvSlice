@@ -643,4 +643,10 @@ impl Server {
                             }))
                             .await
                         {
-                            error!("Failed to
+                            error!("Failed to report unconfirmed block to operator: {}", e);
+                        }
+                        if let Err(e) = {
+                            accounting_sender
+                                .send(AccountingMessage::NewSolution(solution.id()))
+                                .await
+      
