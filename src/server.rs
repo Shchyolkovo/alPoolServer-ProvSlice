@@ -649,4 +649,15 @@ impl Server {
                             accounting_sender
                                 .send(AccountingMessage::NewSolution(solution.id()))
                                 .await
-      
+                        } {
+                            error!("Failed to send accounting message: {}", e);
+                        }
+                    }
+                });
+            }
+            ServerMessage::Exit => {}
+        }
+    }
+
+    pub async fn online_provers(&self) -> u32 {
+        self
