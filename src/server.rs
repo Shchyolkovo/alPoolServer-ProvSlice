@@ -660,4 +660,15 @@ impl Server {
     }
 
     pub async fn online_provers(&self) -> u32 {
-        self
+        self.authenticated_provers.read().await.len() as u32
+    }
+
+    pub async fn online_addresses(&self) -> u32 {
+        self.prover_address_connections.read().await.len() as u32
+    }
+
+    pub async fn pool_speed(&self) -> Vec<f64> {
+        self.pool_state.write().await.speed().await
+    }
+
+    pub a
