@@ -671,4 +671,13 @@ impl Server {
         self.pool_state.write().await.speed().await
     }
 
-    pub a
+    pub async fn address_prover_count(&self, address: Address<N>) -> u32 {
+        self.prover_address_connections
+            .read()
+            .await
+            .get(&address)
+            .map(|prover_connections| prover_connections.len() as u32)
+            .unwrap_or(0)
+    }
+
+    pub async fn address_speed(&self, address: Address<N>) ->
