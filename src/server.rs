@@ -680,4 +680,11 @@ impl Server {
             .unwrap_or(0)
     }
 
-    pub async fn address_speed(&self, address: Address<N>) ->
+    pub async fn address_speed(&self, address: Address<N>) -> Vec<f64> {
+        let mut speed = vec![0.0, 0.0, 0.0, 0.0];
+        let prover_connections_lock = self.prover_address_connections.read().await;
+        let prover_connections = prover_connections_lock.get(&address);
+        if prover_connections.is_none() {
+            return speed;
+        }
+        for prover
