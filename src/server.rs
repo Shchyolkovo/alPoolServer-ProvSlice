@@ -687,4 +687,10 @@ impl Server {
         if prover_connections.is_none() {
             return speed;
         }
-        for prover
+        for prover_connection in prover_connections.unwrap() {
+            if let Some(prover_state) = self.prover_states.read().await.get(prover_connection) {
+                let mut prover_state_lock = prover_state.write().await;
+                prover_state_lock
+                    .speed()
+                    .await
+          
