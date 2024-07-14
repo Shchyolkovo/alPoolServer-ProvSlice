@@ -693,4 +693,13 @@ impl Server {
                 prover_state_lock
                     .speed()
                     .await
-          
+                    .iter()
+                    .zip(speed.iter_mut())
+                    .for_each(|(s, speed)| {
+                        *speed += s;
+                    });
+            }
+        }
+        speed
+    }
+}
