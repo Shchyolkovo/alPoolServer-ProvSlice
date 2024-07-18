@@ -79,3 +79,75 @@ impl<K: Serialize + DeserializeOwned, V: Serialize + DeserializeOwned> StorageDa
         let options = bincode::config::DefaultOptions::new()
             .with_big_endian()
             .with_fixint_encoding()
+            .allow_trailing_bytes();
+        let mut key_buf = vec![self.storage_type.prefix()[0]];
+        key_buf.reserve(options.serialized_size(&key)? as usize);
+        options.serialize_into(&mut key_buf, key)?;
+        match self.db.get(key_buf)? {
+            Some(value) => Ok(Some(options.deserialize(&value)?)),
+            None => Ok(None),
+        }
+    }
+
+    pub fn put(&self, key: &K, value: &V) -> Result<()> {
+        let options = bincode::config::DefaultOptions::new()
+            .with_big_endian()
+            .with_fixint_encoding()
+            .allow_trailing_bytes();
+        let mut key_buf = vec![self.storage_type.prefix()[0]];
+        key_buf.reserve(options.serialized_size(&key)? as usize);
+        options.serialize_into(&mut key_buf, key)?;
+        let value_buf = options.serialize(value)?;
+        self.db.put(key_buf, value_buf)?;
+        Ok(())
+    }
+
+    #[allow(dead_code)]
+    pub fn iter(&self) -> StorageIter<'_, K, V> {
+        StorageIter {
+            storage_type: self.storage_type.clone(),
+            iter: self.db.prefix_iterator(self.storage_type.prefix()),
+            _p: Default::default(),
+        }
+    }
+}
+
+pub struct StorageIter<'a, K: Serialize + DeserializeOwned, V: Serialize + DeserializeOwned> {
+    storage_type: StorageType,
+    iter: rocksdb::DBIteratorWithThreadMode<'a, DBWithThreadMode<SingleThreaded>>,
+    _p: PhantomData<(K, V)>,
+}
+
+impl<'a, K: Serialize + DeserializeOwned, V: Serialize + DeserializeOwned> Iterator for StorageIter<'a, K, V> {
+    type Item = (K, V);
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let options = bincode::config::DefaultOptions::new()
+            .with_big_endian()
+            .with_fixint_encoding()
+            .allow_trailing_bytes();
+        match self.iter.next()? {
+            Ok((raw_key, raw_value)) => {
+                if raw_key[0] == self.storage_type.prefix()[0] {
+                    let key = options.deserialize::<K>(&raw_key[1..]);
+                    let value = options.deserialize::<V>(&raw_value);
+                    match key.and_then(|k| value.map(|v| (k, v))) {
+                        Ok(item) => Some(item),
+                        Err(e) => {
+                            error!("Failed to deserialize key or value: {:?}", e);
+                            error!("Key: {:?}", &raw_key);
+                            error!("Value: {:?}", &raw_value);
+                            None
+                        }
+                    }
+                } else {
+                    None
+                }
+            }
+            Err(e) => {
+                error!("Failed to iterate: {:?}", e);
+                None
+            }
+        }
+    }
+}
