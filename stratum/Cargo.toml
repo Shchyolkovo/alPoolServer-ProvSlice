@@ -14,4 +14,5 @@ erased-serde = "0.4.5"
 downcast-rs = "1.2.1"
 
 [dependencies.tokio-util]
-version = "0.7.11
+version = "0.7.11"
+features = ["codec"]
