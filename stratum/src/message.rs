@@ -10,4 +10,11 @@ pub enum StratumMessage {
     /// (id, worker_name, worker_password)
     Authorize(Id, String, String),
 
-    /// This is the di
+    /// This is the difficulty target for the next job.
+    /// (difficulty_target)
+    SetTarget(u64),
+
+    /// New job from the proving pool.
+    /// See protocol specification for details about the fields.
+    /// (job_id, epoch_hash, address, clean_jobs)
+    Notify(String, String, Option<String>, bool)
