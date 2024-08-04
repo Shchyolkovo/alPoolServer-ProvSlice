@@ -17,4 +17,16 @@ pub enum StratumMessage {
     /// New job from the proving pool.
     /// See protocol specification for details about the fields.
     /// (job_id, epoch_hash, address, clean_jobs)
-    Notify(String, String, Option<String>, bool)
+    Notify(String, String, Option<String>, bool),
+
+    /// Submit shares to the pool.
+    /// See protocol specification for details about the fields.
+    /// (id, worker_name, job_id, counter)
+    Submit(Id, String, String, String),
+
+    /// (id, result, error)
+    Response(Id, Option<ResponseParams>, Option<Error<()>>),
+}
+
+impl StratumMessage {
+    
