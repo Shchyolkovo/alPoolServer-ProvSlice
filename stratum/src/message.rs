@@ -29,4 +29,9 @@ pub enum StratumMessage {
 }
 
 impl StratumMessage {
-    
+    pub fn name(&self) -> &'static str {
+        match self {
+            StratumMessage::Subscribe(..) => "mining.subscribe",
+            StratumMessage::Authorize(..) => "mining.authorize",
+            StratumMessage::SetTarget(..) => "mining.set_target",
+            StratumMessage::Notify(..) 
