@@ -34,4 +34,9 @@ impl StratumMessage {
             StratumMessage::Subscribe(..) => "mining.subscribe",
             StratumMessage::Authorize(..) => "mining.authorize",
             StratumMessage::SetTarget(..) => "mining.set_target",
-            StratumMessage::Notify(..) 
+            StratumMessage::Notify(..) => "mining.notify",
+            StratumMessage::Submit(..) => "mining.submit",
+            StratumMessage::Response(..) => "mining.response",
+        }
+    }
+}
