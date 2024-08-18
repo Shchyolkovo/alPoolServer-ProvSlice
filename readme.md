@@ -36,4 +36,21 @@ Continuous improvements and added features:
 ### Things to Test
 
 - Functionality of the payout system.
-- Performance of difficulty retargeting system under high
+- Performance of difficulty retargeting system under high load situations.
+- Absence of deadlock under high load situations.
+
+## Usage
+
+Current usage: for those with necessary knowledge only.
+
+## System Requirements
+
+Mandatory:
+- Rust 1.77+ (To be confirmed)
+Optional:
+- PostgreSQL 11+ (To be confirmed)
+- PL/Python 3.6+
+
+## License
+
+AGPL-3.0-or-later
