@@ -29,4 +29,11 @@ Continuous improvements and added features:
 - RDBMS utilization instead of RocksDB for most data storage.
 - Implementation of a proper stratum protocol for pool-miner communication.
 - Modification of the difficulty targeting system.
-- Evaluation of the need for more A
+- Evaluation of the need for more API endpoints to offload work to frontends.
+- Initiation of the payout system: Allocation of rewards to provers after confirmation.
+- Future development of the payout system to send rewards to provers.
+
+### Things to Test
+
+- Functionality of the payout system.
+- Performance of difficulty retargeting system under high
