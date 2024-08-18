@@ -20,4 +20,13 @@ This server provides key functionalities, including:
 
 1. An implementation of the Stratum protocol. [Refer to the Specs](stratum/spec.md).
 2. An adept automatic difficulty targeting system (More testing needed under high load).
-3. Comprehensive stats for the pool and prove
+3. Comprehensive stats for the pool and provers.
+
+## Project Status
+
+Continuous improvements and added features:
+
+- RDBMS utilization instead of RocksDB for most data storage.
+- Implementation of a proper stratum protocol for pool-miner communication.
+- Modification of the difficulty targeting system.
+- Evaluation of the need for more A
